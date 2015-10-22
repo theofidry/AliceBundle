@@ -22,12 +22,12 @@ Currently supports [Doctrine ORM](http://www.doctrine-project.org/projects/orm.h
 3. [Advanced usage](src/Resources/doc/advanced-usage.md)
     1. [Enabling databases](src/Resources/doc/advanced-usage.md#enabling-databases)
     2. [Fixtures parameters](src/Resources/doc/advanced-usage.md#fixtures-parameters)
-	3. [Doctrine ORM](src/Resources/doc/advanced-usage.md#doctrine-orm)
-	4. [Doctrine ODM (MongoDB)](src/Resources/doc/advanced-usage.md#doctrine-odm-and-doctrine-phpcr-odm)
-	5. [Doctrine PHPCR ODM](src/Resources/doc/advanced-usage.md#doctrine-odm-and-doctrine-phpcr-odm)
+    3. [Doctrine ORM](src/Resources/doc/advanced-usage.md#doctrine-orm)
+    4. [Doctrine ODM (MongoDB)](src/Resources/doc/advanced-usage.md#doctrine-odm-and-doctrine-phpcr-odm)
+    5. [Doctrine PHPCR ODM](src/Resources/doc/advanced-usage.md#doctrine-odm-and-doctrine-phpcr-odm)
 4. [Custom Faker Providers](src/Resources/doc/faker-providers.md)
-	1. [Simple Provider](src/Resources/doc/faker-providers.md#simple-provider)
-	2. [Advanced Provider](src/Resources/doc/faker-providers.md#advanced-provider)
+    1. [Simple Provider](src/Resources/doc/faker-providers.md#simple-provider)
+    2. [Advanced Provider](src/Resources/doc/faker-providers.md#advanced-provider)
 5. [Custom Alice Processors](src/Resources/doc/alice-processors.md)
 6. [DoctrineFixturesBundle support](src/Resources/doc/doctrine-fixtures-bundle.md)
 7. [Resources](#resources)
@@ -37,6 +37,9 @@ Other references:
 * [Knp University screencast](https://knpuniversity.com/screencast/alice-fixtures)
 
 ## Installation
+
+First you need install appropriate database managers (if you didn't installed it yet), according to your project requirements.
+Check the documentation [here](src/Resources/doc/database-managers-install.md).
 
 You can use [Composer](https://getcomposer.org/) to install the bundle to your project:
 
