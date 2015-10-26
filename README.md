@@ -39,7 +39,7 @@ Other references:
 ## Installation
 
 First you need install appropriate database managers (if you didn't installed it yet), according to your project requirements.
-How install supported database managers you can find [here](src/Resources/doc/database-managers-install.md).
+Check the documentation [here](src/Resources/doc/database-managers-install.md).
 
 You can use [Composer](https://getcomposer.org/) to install the bundle to your project:
 
