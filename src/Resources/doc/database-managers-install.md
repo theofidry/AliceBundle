@@ -16,4 +16,4 @@
 3. Install [DoctrinePHPCRBundle](http://symfony.com/doc/current/cmf/bundles/phpcr_odm/introduction.html)
 4. Install [Doctrine Data Fixtures](https://github.com/doctrine/data-fixtures): `composer require --save-dev doctrine/data-fixtures`
 
-Then install [HautelookAliceBundle](https://github.com/hautelook/AliceBundle#installation)
+Then install [HautelookAliceBundle](https://github.com/hautelook/AliceBundle#installation).
