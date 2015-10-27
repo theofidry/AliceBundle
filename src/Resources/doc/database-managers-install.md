@@ -3,7 +3,7 @@
 ## Doctrine ORM
 1. Install [DoctrineORM](http://doctrine-orm.readthedocs.org/projects/doctrine-orm/en/latest/reference/configuration.html);
 2. Install [DoctrineBundle](http://symfony.com/doc/master/bundles/DoctrineBundle/installation.html);
-3. Install [Doctrine Data Fixtures](https://github.com/doctrine/data-fixtures): composer require --save-dev doctrine/data-fixtures
+3. Install [Doctrine Data Fixtures](https://github.com/doctrine/data-fixtures): `composer require --save-dev doctrine/data-fixtures`
 
 ## Doctrine ODM
 1. Install [DoctrineODM](http://doctrine-orm.readthedocs.org/projects/doctrine-mongodb-odm/en/latest/reference/introduction.html#setup)
@@ -12,6 +12,6 @@
 ## Doctrine PHPCR ODM
 1. Install [Jackalope Doctrine DBAL](https://github.com/jackalope/jackalope-doctrine-dbal#installation)
 2. Install [Doctrine PHPCR ODM](http://doctrine-orm.readthedocs.org/projects/doctrine-phpcr-odm/en/latest/reference/installation-configuration.html)
-3. Install [Bundle for integrate Doctrine PHPCR ODM with Symfony](http://symfony.com/doc/current/cmf/bundles/phpcr_odm/introduction.html)
+3. Install [DoctrinePHPCRBundle](http://symfony.com/doc/current/cmf/bundles/phpcr_odm/introduction.html)
 
-After install [DoctrineFixturesBundle](http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html);
+Then install [HautelookAliceBundle](https://github.com/hautelook/AliceBundle#installation)
