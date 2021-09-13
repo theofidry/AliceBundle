@@ -8,10 +8,10 @@ The database support is done in [FidryAliceDataFixtures](https://github.com/theo
 project to know which database/ORM is supported.
 
 **Warning: this is the documentation for HautelookAliceBundle 2.0. If you want to check the documentation for 1.x, head
-[this way](https://github.com/hautelook/AliceBundle/tree/1.x).**
+[this way](https://github.com/theofidry/AliceBundle/tree/1.x).**
 
 [![Package version](https://img.shields.io/packagist/v/hautelook/alice-bundle.svg?style=flat-square)](https://packagist.org/packages/hautelook/alice-bundle)
-[![Build Status](https://img.shields.io/travis/hautelook/AliceBundle/master.svg?style=flat-square)](https://travis-ci.org/hautelook/AliceBundle?branch=master)
+[![Build Status](https://img.shields.io/github/workflow/status/theofidry/AliceBundle/CI.svg?style=flat-square)](https://github.com/theofidry/AliceBundle/actions)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/d93a3fc4-3fe8-4be3-aa62-307f53898199.svg?style=flat-square)](https://insight.sensiolabs.com/projects/d93a3fc4-3fe8-4be3-aa62-307f53898199)
 [![Dependency Status](https://www.versioneye.com/user/projects/55d26478265ff6001a000084/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55d26478265ff6001a000084)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/hautelook/AliceBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/hautelook/AliceBundle/?branch=master)
@@ -284,7 +284,7 @@ class NewsTest extends WebTestCase
 
 This bundle was originaly developped by [Baldur RENSCH](https://github.com/baldurrensch) and [HauteLook](https://github.com/hautelook). It is now maintained by [Théo FIDRY](https://github.com/theofidry).
 
-[Other contributors](https://github.com/hautelook/AliceBundle/graphs/contributors).
+[Other contributors](https://github.com/theofidry/AliceBundle/graphs/contributors).
 
 
 ## License

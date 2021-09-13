@@ -9,8 +9,8 @@
 	* `hautelook_alice:doctrine:fixtures:load`
 	* `hautelook_alice:doctrine:mongodb:fixtures:load`
 	* `hautelook_alice:doctrine:phpcr:fixtures:load`
-* Possibility to [load fixtures by environment](https://github.com/hautelook/AliceBundle/blob/master/src/Resources/doc/advanced-usage.md#environment-specific-fixtures)
-* Possibility to [load fixtures by bundle](https://github.com/hautelook/AliceBundle#basic-usage)
+* Possibility to [load fixtures by environment](https://github.com/theofidry/AliceBundle/blob/master/doc/advanced-usage.md#environment-specific-fixtures)
+* Possibility to [load fixtures by bundle](https://github.com/theofidry/AliceBundle#basic-usage)
 * No longer need to create a data loader to load fixtures
 * Removed [DoctrineFixturesBundle](https://github.com/doctrine/DoctrineFixturesBundle) dependency
 * Now possible to register [Alice Processors][1]
