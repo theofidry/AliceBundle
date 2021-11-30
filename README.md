@@ -73,7 +73,7 @@ With [Symfony Flex](https://symfony.com/doc/current/setup/flex.html) (recommende
 # If you do not have Doctrine installed yet:
 composer require doctrine-orm
 
-composer require --dev hautelook/alice-bundle 
+composer require --dev hautelook/alice-bundle
 ```
 
 You're ready to use AliceBundle, and can jump to the next section!
@@ -85,14 +85,14 @@ wherever your Kernel class is located:
 <?php
 // app/AppKernel.php
 
-public function registerBundles()
+public function registerBundles(): iterable
 {
     $bundles = [
         new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
         // ...
         new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
     ];
-    
+
     if (in_array($this->getEnvironment(), ['dev', 'test'])) {
         //...
         $bundles[] = new Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle();

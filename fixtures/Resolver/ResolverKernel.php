@@ -22,7 +22,7 @@ class ResolverKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new ABundle(),

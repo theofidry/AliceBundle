@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\PhpUnit;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 /**
  * Purges and loads the fixtures before every tests.
  *
@@ -22,7 +24,7 @@ trait ReloadDatabaseTrait
 {
     use BaseDatabaseTrait;
 
-    protected static function bootKernel(array $options = [])
+    protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);

@@ -140,7 +140,7 @@ class HautelookAliceBundleTest extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return AppKernel::class;
     }

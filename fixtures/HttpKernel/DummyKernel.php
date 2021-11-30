@@ -13,7 +13,10 @@ namespace Hautelook\AliceBundle\HttpKernel;
 
 use Hautelook\AliceBundle\NotCallableTrait;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -42,7 +45,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = self::MAIN_REQUEST, $catch = true): Response
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -50,7 +53,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -82,7 +85,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getBundles()
+    public function getBundles(): array
     {
         return [];
     }
@@ -90,7 +93,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getBundle($name, $first = true)
+    public function getBundle($name, $first = true): BundleInterface
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -98,7 +101,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function locateResource($name, $dir = null, $first = true)
+    public function locateResource($name, $dir = null, $first = true): string
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -114,7 +117,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
         return 'fake_env';
     }
@@ -122,7 +125,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return true;
     }
@@ -138,7 +141,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return new Container();
     }
@@ -146,7 +149,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getStartTime()
+    public function getStartTime(): float
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -154,7 +157,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -162,7 +165,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -170,7 +173,7 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCharset()
+    public function getCharset(): string
     {
         $this->__call(__METHOD__, \func_get_args());
     }
@@ -186,8 +189,15 @@ class DummyKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         $this->__call(__METHOD__, \func_get_args());
     }
+
+    public function getBuildDir(): string
+    {
+        // TODO: Implement getBuildDir() method.
+    }
+
+
 }
