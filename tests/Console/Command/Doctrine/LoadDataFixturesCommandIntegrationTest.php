@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\DBAL\Sharding\PoolingShardConnection;
 use Doctrine\ORM\EntityManagerInterface;
 use Hautelook\AliceBundle\Functional\AppKernel;
