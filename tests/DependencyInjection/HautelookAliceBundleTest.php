@@ -19,7 +19,6 @@ use Hautelook\AliceBundle\Functional\ConfigurableKernel;
 use Hautelook\AliceBundle\Functional\WithoutDoctrineKernel;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @covers \Hautelook\AliceBundle\HautelookAliceBundle
@@ -33,14 +32,8 @@ class HautelookAliceBundleTest extends KernelTestCase
      */
     protected function tearDown(): void
     {
-        if (Kernel::VERSION_ID < 41000) {
-            if (null !== self::$kernel) {
-                self::$kernel->shutdown();
-            }
-        } else {
-            parent::tearDown();
-            static::$class = null;
-        }
+        parent::tearDown();
+        static::$class = null;
     }
 
     public function testCannotBootIfFidryAliceDataFixturesBundleIsNotRegistered()
@@ -65,14 +58,8 @@ class HautelookAliceBundleTest extends KernelTestCase
 
     public function testServiceRegistration()
     {
-        if (Kernel::VERSION_ID < 41000) {
-            self::$kernel = new AppKernel('public', true);
-            self::$kernel->boot();
-            $container = self::$kernel->getContainer();
-        } else {
-            parent::bootKernel(['environment' => 'public', 'debug' => true]);
-            $container = self::$container;
-        }
+        parent::bootKernel(['environment' => 'public', 'debug' => true]);
+        $container = self::getContainer();
 
         // Resolvers
         $this->assertInstanceOf(
