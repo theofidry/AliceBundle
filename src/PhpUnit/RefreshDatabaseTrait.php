@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\PhpUnit;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 /**
  * Purges and loads the fixtures before the first test and wraps all test in a transaction that will be roll backed when
  * it has finished.
@@ -25,7 +27,7 @@ trait RefreshDatabaseTrait
 
     protected static $dbPopulated = false;
 
-    protected static function bootKernel(array $options = [])
+    protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);

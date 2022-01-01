@@ -15,6 +15,7 @@ namespace Hautelook\AliceBundle\PhpUnit;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Erase and recreate database schema before each tests. (All existing data will be lost!).
@@ -25,7 +26,7 @@ trait RecreateDatabaseTrait
 {
     use BaseDatabaseTrait;
 
-    protected static function bootKernel(array $options = [])
+    protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);
