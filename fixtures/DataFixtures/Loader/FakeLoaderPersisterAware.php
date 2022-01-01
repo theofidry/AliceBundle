@@ -15,17 +15,12 @@ namespace Hautelook\AliceBundle\DataFixtures\Loader;
 
 use Fidry\AliceDataFixtures\Persistence\PersisterAwareInterface;
 use Fidry\AliceDataFixtures\Persistence\PersisterInterface;
+use function func_get_args;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class FakeLoaderPersisterAware extends FakeLoader implements PersisterAwareInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function withPersister(PersisterInterface $persister)
+    public function withPersister(PersisterInterface $persister): self
     {
-        $this->__call(__METHOD__, \func_get_args());
+        $this->__call(__METHOD__, func_get_args());
     }
 }

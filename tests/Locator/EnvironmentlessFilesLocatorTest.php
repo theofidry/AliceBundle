@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Locator;
 
 use Hautelook\AliceBundle\FixtureLocatorInterface;
+use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -27,22 +28,22 @@ class EnvironmentlessFilesLocatorTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testIsAFixtureLocator()
+    public function testIsAFixtureLocator(): void
     {
-        $this->assertTrue(is_a(EnvironmentlessFilesLocator::class, FixtureLocatorInterface::class, true));
+        self::assertTrue(is_a(EnvironmentlessFilesLocator::class, FixtureLocatorInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(EnvironmentlessFilesLocator::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(EnvironmentlessFilesLocator::class))->isCloneable());
     }
 
-    public function testConcateneAllLocatorFiles()
+    public function testConcateneAllLocatorFiles(): void
     {
         $bundles = ['ABdundle', 'BBundle'];
         $env = 'dev';
 
-        /** @var FixtureLocatorInterface|ObjectProphecy $decoratedLocatorProphecy */
+        /** @var ObjectProphecy<FixtureLocatorInterface> $decoratedLocatorProphecy */
         $decoratedLocatorProphecy = $this->prophesize(FixtureLocatorInterface::class);
         $decoratedLocatorProphecy
             ->locateFiles($bundles, $env)
@@ -64,7 +65,7 @@ class EnvironmentlessFilesLocatorTest extends TestCase
         $locator = new EnvironmentlessFilesLocator($decoratedLocator);
         $actual = $locator->locateFiles($bundles, $env);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         $decoratedLocatorProphecy->locateFiles(Argument::cetera())->shouldHaveBeenCalledTimes(2);
     }

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\DependencyInjection;
 
+use function array_keys;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use Hautelook\AliceBundle\HautelookAliceBundle;
+use function implode;
 use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,27 +34,31 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 final class HautelookAliceExtension extends Extension
 {
-    const SERVICES_DIR = __DIR__.'/../../resources/config';
+    private const SERVICES_DIR = __DIR__.'/../../resources/config';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $missingBundles = [DoctrineBundle::class => true, FidryAliceDataFixturesBundle::class => true];
+        $missingBundles = [
+            DoctrineBundle::class => true,
+            FidryAliceDataFixturesBundle::class => true,
+        ];
+
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             unset($missingBundles[$bundle]);
+
             if (!$missingBundles) {
                 break;
             }
         }
 
         if ($missingBundles) {
-            throw new LogicException(sprintf(
-                'To register "%s", you also need: "%s".',
-                HautelookAliceBundle::class,
-                implode('", "', array_keys($missingBundles))
-            ));
+            throw new LogicException(
+                sprintf(
+                    'To register "%s", you also need: "%s".',
+                    HautelookAliceBundle::class,
+                    implode('", "', array_keys($missingBundles)),
+                ),
+            );
         }
 
         $this->loadConfig($configs, $container);
@@ -61,11 +67,8 @@ final class HautelookAliceExtension extends Extension
 
     /**
      * Loads alice configuration and add the configuration values to the application parameters.
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Exception
      */
-    private function loadConfig(array $configs, ContainerBuilder $container)
+    private function loadConfig(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $processedConfiguration = $this->processConfiguration($configuration, $configs);
@@ -81,7 +84,7 @@ final class HautelookAliceExtension extends Extension
     /**
      * Loads all the services declarations.
      */
-    private function loadServices(ContainerBuilder $container)
+    private function loadServices(ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(self::SERVICES_DIR));
         $finder = new Finder();
@@ -89,9 +92,7 @@ final class HautelookAliceExtension extends Extension
         $finder->files()->in(self::SERVICES_DIR);
 
         foreach ($finder as $file) {
-            $loader->load(
-                $file->getRelativePathname()
-            );
+            $loader->load($file->getRelativePathname());
         }
     }
 }

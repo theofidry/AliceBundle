@@ -14,20 +14,15 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Loader;
 
 use Doctrine\ORM\EntityManagerInterface;
+use function func_get_args;
 use Hautelook\AliceBundle\LoaderInterface;
 use Hautelook\AliceBundle\NotCallableTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class FakeLoader implements LoaderInterface
 {
     use NotCallableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(
         Application $application,
         EntityManagerInterface $manager,
@@ -37,7 +32,7 @@ class FakeLoader implements LoaderInterface
         bool $purgeWithTruncate,
         string $shard = null,
         bool $noBundles = false
-    ) {
-        $this->__call(__METHOD__, \func_get_args());
+    ): array {
+        $this->__call(__METHOD__, func_get_args());
     }
 }

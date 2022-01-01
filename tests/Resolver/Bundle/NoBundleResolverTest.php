@@ -16,6 +16,7 @@ namespace Hautelook\AliceBundle\Resolver\Bundle;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
+use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,17 +30,17 @@ class NoBundleResolverTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testIsABundleResolver()
+    public function testIsABundleResolver(): void
     {
-        $this->assertTrue(is_a(NoBundleResolver::class, BundleResolverInterface::class, true));
+        self::assertTrue(is_a(NoBundleResolver::class, BundleResolverInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(NoBundleResolver::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(NoBundleResolver::class))->isCloneable());
     }
 
-    public function testReturnsAllBundlesIfNoBundleIsRequested()
+    public function testReturnsAllBundlesIfNoBundleIsRequested(): void
     {
         $kernel = new ResolverKernel(__FUNCTION__, true);
         $kernel->boot();
@@ -47,7 +48,7 @@ class NoBundleResolverTest extends TestCase
 
         $resolver = new NoBundleResolver(new FakeBundleResolver());
         $result = $resolver->resolveBundles($application, []);
-        $this->assertSame(
+        self::assertSame(
             [
                 $kernel->getBundle('ABundle'),
                 $kernel->getBundle('BBundle'),
@@ -58,7 +59,7 @@ class NoBundleResolverTest extends TestCase
         $kernel->shutdown();
     }
 
-    public function testReturnsTheDecoratedResolverResultIfABundleIsRequested()
+    public function testReturnsTheDecoratedResolverResultIfABundleIsRequested(): void
     {
         $kernel = new ResolverKernel(__FUNCTION__, true);
         $application = new Application($kernel);
@@ -72,7 +73,7 @@ class NoBundleResolverTest extends TestCase
         $resolver = new NoBundleResolver($decoratedResolver);
         $actual = $resolver->resolveBundles($application, $bundles);
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
 
         $decoratedResolverProphecy->resolveBundles(Argument::cetera())->shouldHaveBeenCalledTimes(1);
     }

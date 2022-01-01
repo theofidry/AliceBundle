@@ -15,9 +15,6 @@ namespace Hautelook\AliceBundle\Resolver;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class ABundle extends Bundle
 {
 }

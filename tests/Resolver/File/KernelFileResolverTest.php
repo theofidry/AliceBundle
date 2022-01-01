@@ -16,10 +16,14 @@ namespace Hautelook\AliceBundle\Resolver\File;
 use Fidry\AliceDataFixtures\FileResolverInterface;
 use Hautelook\AliceBundle\Functional\SimpleKernel;
 use Hautelook\AliceBundle\HttpKernel\DummyKernel;
+use InvalidArgumentException;
+use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use function realpath;
 use ReflectionClass;
 use Symfony\Component\HttpKernel\KernelInterface;
+use TypeError;
 
 /**
  * @covers \Hautelook\AliceBundle\Resolver\File\KernelFileResolver
@@ -28,32 +32,26 @@ class KernelFileResolverTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var KernelInterface|null
-     */
-    protected $kernel;
+    protected KernelInterface $kernel;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
-        if (null !== $this->kernel) {
+        if (isset($this->kernel)) {
             $this->kernel->shutdown();
         }
     }
 
-    public function testIsAFileResolver()
+    public function testIsAFileResolver(): void
     {
-        $this->assertTrue(is_a(KernelFileResolver::class, FileResolverInterface::class, true));
+        self::assertTrue(is_a(KernelFileResolver::class, FileResolverInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(KernelFileResolver::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(KernelFileResolver::class))->isCloneable());
     }
 
-    public function testReturnResolvedFiles()
+    public function testReturnResolvedFiles(): void
     {
         $files = $expected = [
             __FILE__,
@@ -62,38 +60,38 @@ class KernelFileResolverTest extends TestCase
         $resolver = new KernelFileResolver(new DummyKernel());
         $actual = $resolver->resolve($files);
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
-    public function testThrowsAnErrorIfOneOfTheFilePathGivenIsNotAString()
+    public function testThrowsAnErrorIfOneOfTheFilePathGivenIsNotAString(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
 
         $resolver = new KernelFileResolver(new DummyKernel());
         $resolver->resolve([true]);
     }
 
-    public function testThrowsAnExceptionIfFileDoesNotExist()
+    public function testThrowsAnExceptionIfFileDoesNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The file "unknown" was not found.');
 
         $resolver = new KernelFileResolver(new DummyKernel());
         $resolver->resolve(['unknown']);
     }
 
-    public function testThrowsAnExceptionIfFileIsADirectory()
+    public function testThrowsAnExceptionIfFileIsADirectory(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Expected "\/.*?\/tests\/Resolver\/File" to be a fixture file, got a directory instead\.$/');
 
         $resolver = new KernelFileResolver(new DummyKernel());
         $resolver->resolve([__DIR__]);
     }
 
-    public function testThrowsAnExceptionIfFileResolvedByTheKernelDoesNotExist()
+    public function testThrowsAnExceptionIfFileResolvedByTheKernelDoesNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $files = [
             '@SimpleBundle/dummy.yml',
@@ -106,9 +104,9 @@ class KernelFileResolverTest extends TestCase
         $resolver->resolve($files);
     }
 
-    public function testThrowsAnExceptionIfFileResolvedByTheKernelIsADirectory()
+    public function testThrowsAnExceptionIfFileResolvedByTheKernelIsADirectory(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected "@SimpleBundle/files" to be a fixture file, got a directory instead.');
 
         $files = [
@@ -122,11 +120,11 @@ class KernelFileResolverTest extends TestCase
         $resolver->resolve($files);
     }
 
-    public function testAbsoluteFilePathAreReturnedAndDuplicatesAreRemoved()
+    public function testAbsoluteFilePathAreReturnedAndDuplicatesAreRemoved(): void
     {
         $files = [
-            '@SimpleBundle/files/foo.yml',
-            '@SimpleBundle/files/bar.yml',
+            '@SimpleBundle/files/foo.yaml',
+            '@SimpleBundle/files/bar.yaml',
             __FILE__,
             __DIR__.'/../File/KernelFileResolverTest.php',
         ];
@@ -135,14 +133,14 @@ class KernelFileResolverTest extends TestCase
         $this->kernel->boot();
 
         $expected = [
-            realpath(__DIR__.'/../../../fixtures/Functional/SimpleBundle/files/foo.yml'),
-            realpath(__DIR__.'/../../../fixtures/Functional/SimpleBundle/files/bar.yml'),
+            realpath(__DIR__.'/../../../fixtures/Functional/SimpleBundle/files/foo.yaml'),
+            realpath(__DIR__.'/../../../fixtures/Functional/SimpleBundle/files/bar.yaml'),
             __FILE__,
         ];
 
         $resolver = new KernelFileResolver($this->kernel);
         $actual = $resolver->resolve($files);
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

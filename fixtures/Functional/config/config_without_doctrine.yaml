@@ -6,13 +6,21 @@ framework:
     test: ~
 
 services:
+    _defaults:
+        public: true
+
     data_fixtures.faker.provider.foo:
         class: Hautelook\AliceBundle\Functional\TestBundle\DataFixtures\Faker\Provider\FooProvider
-        tags: [ { name: nelmio_alice.faker.provider } ]
+        tags: [ 'nelmio_alice.faker.provider' ]
+
+    fidry_alice_data_fixtures.loader.doctrine:
+        class: Hautelook\AliceBundle\Loader\FakeLoader
+
+    fidry_alice_data_fixtures.doctrine.persister_loader:
+        class: Hautelook\AliceBundle\Loader\FakeLoader
 
     app.city_factory:
         class: Hautelook\AliceBundle\Functional\TestBundle\Entity\CityFactory
-        public: true
 
     logger:
         class: Psr\Log\NullLogger

@@ -24,17 +24,14 @@ final class NoBundleResolver implements BundleResolverInterface
 {
     use IsAServiceTrait;
 
-    private $decoratedResolver;
+    private BundleResolverInterface $decoratedResolver;
 
     public function __construct(BundleResolverInterface $decoratedResolver)
     {
         $this->decoratedResolver = $decoratedResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveBundles(Application $application, array $names)
+    public function resolveBundles(Application $application, array $names): array
     {
         if ([] === $names) {
             return array_values($application->getKernel()->getBundles());

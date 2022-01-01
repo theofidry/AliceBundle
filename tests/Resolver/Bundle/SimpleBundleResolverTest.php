@@ -15,6 +15,7 @@ namespace Hautelook\AliceBundle\Resolver\Bundle;
 
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
+use function is_a;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -24,17 +25,17 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
  */
 class SimpleBundleResolverTest extends TestCase
 {
-    public function testIsABundleResolver()
+    public function testIsABundleResolver(): void
     {
-        $this->assertTrue(is_a(SimpleBundleResolver::class, BundleResolverInterface::class, true));
+        self::assertTrue(is_a(SimpleBundleResolver::class, BundleResolverInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(SimpleBundleResolver::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(SimpleBundleResolver::class))->isCloneable());
     }
 
-    public function testCanResolveBundles()
+    public function testCanResolveBundles(): void
     {
         $kernel = new ResolverKernel(__FUNCTION__, true);
         $kernel->boot();
@@ -42,7 +43,7 @@ class SimpleBundleResolverTest extends TestCase
 
         $resolver = new SimpleBundleResolver();
         $result = $resolver->resolveBundles($application, ['ABundle']);
-        $this->assertSame(
+        self::assertSame(
             [
                 $kernel->getBundle('ABundle'),
             ],
@@ -52,7 +53,7 @@ class SimpleBundleResolverTest extends TestCase
         $kernel->shutdown();
     }
 
-    public function testThrowsAnExceptionWhenBundleCoudlNotBeFound()
+    public function testThrowsAnExceptionWhenBundleCoudlNotBeFound(): void
     {
         $this->expectException(\Hautelook\AliceBundle\Exception\Resolver\BundleNotFoundException::class);
         $this->expectExceptionMessage('The bundle "UnknownBundle" was not found. Bundles available are: ["ABundle", "BBundle"].');

@@ -25,9 +25,6 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class TestKernel extends Kernel
 {
     public function registerBundles(): iterable
@@ -45,9 +42,9 @@ class TestKernel extends Kernel
         ];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/config/config.yml');
-        $loader->load(__DIR__.'/config/doctrine.yml');
+        $loader->load(__DIR__.'/config/config.yaml');
+        $loader->load(__DIR__.'/config/doctrine.yaml');
     }
 }

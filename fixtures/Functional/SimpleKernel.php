@@ -17,14 +17,8 @@ use Hautelook\AliceBundle\Functional\SimpleBundle\SimpleBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class SimpleKernel extends Kernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         return [

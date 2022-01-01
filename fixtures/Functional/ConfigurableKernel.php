@@ -19,16 +19,13 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class ConfigurableKernel extends Kernel
 {
-    private $addedBundles = [];
-
     /**
-     * {@inheritdoc}
+     * @var list<Bundle>
      */
+    private array $addedBundles = [];
+
     public function registerBundles(): iterable
     {
         return array_merge(
@@ -47,11 +44,8 @@ class ConfigurableKernel extends Kernel
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/config/config.yml');
+        $loader->load(__DIR__.'/config/config.yaml');
     }
 }

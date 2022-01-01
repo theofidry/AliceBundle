@@ -15,9 +15,6 @@ namespace Hautelook\AliceBundle\Functional\SimpleBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class SimpleBundle extends Bundle
 {
 }

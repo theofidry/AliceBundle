@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
+use DomainException;
+use function sprintf;
+
 trait NotCallableTrait
 {
     public function __call($method, $arguments)
     {
-        throw new \DomainException(
+        throw new DomainException(
             sprintf(
                 'Did not expect "%s" to be called.',
-                $method
-            )
+                $method,
+            ),
         );
     }
 }

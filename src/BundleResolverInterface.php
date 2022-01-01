@@ -27,7 +27,7 @@ interface BundleResolverInterface
      *
      * @throws BundleNotFoundException
      *
-     * @return BundleInterface[]
+     * @return list<BundleInterface>
      */
-    public function resolveBundles(Application $application, array $names);
+    public function resolveBundles(Application $application, array $names): array;
 }

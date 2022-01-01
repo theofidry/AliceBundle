@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Locator;
 
+use function array_map;
+use function array_merge;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Nelmio\Alice\IsAServiceTrait;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -22,8 +24,8 @@ final class EnvDirectoryLocator implements FixtureLocatorInterface
 {
     use IsAServiceTrait;
 
-    private $fixturePaths;
-    private $rootDirs;
+    private array $fixturePaths;
+    private array $rootDirs;
 
     /**
      * @param string[] $fixturePaths paths in which to look for fixtures relative to the bundle/base directory paths
@@ -46,7 +48,7 @@ final class EnvDirectoryLocator implements FixtureLocatorInterface
      */
     public function locateFiles(array $bundles, string $environment): array
     {
-        $fixtureFiles = array_merge(
+        return array_merge(
             ...array_map(
                 function (string $rootDir) use ($environment): array {
                     return $this->doLocateFiles($rootDir, $environment);
@@ -60,8 +62,6 @@ final class EnvDirectoryLocator implements FixtureLocatorInterface
                 $bundles
             )
         );
-
-        return $fixtureFiles;
     }
 
     /**

@@ -8,15 +8,7 @@ framework:
 services:
     data_fixtures.faker.provider.foo:
         class: Hautelook\AliceBundle\Functional\TestBundle\DataFixtures\Faker\Provider\FooProvider
-        tags: [ { name: nelmio_alice.faker.provider } ]
-
-    fidry_alice_data_fixtures.loader.doctrine:
-        class: Hautelook\AliceBundle\Loader\FakeLoader
-        public: true
-
-    fidry_alice_data_fixtures.doctrine.persister_loader:
-        class: Hautelook\AliceBundle\Loader\FakeLoader
-        public: true
+        tags: [ 'nelmio_alice.faker.provider' ]
 
     app.city_factory:
         class: Hautelook\AliceBundle\Functional\TestBundle\Entity\CityFactory

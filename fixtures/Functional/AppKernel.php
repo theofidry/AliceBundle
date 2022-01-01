@@ -25,9 +25,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         return [
@@ -39,23 +36,18 @@ class AppKernel extends Kernel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         if ('public' !== $this->getEnvironment()) {
-            $loader->load(__DIR__.'/config/config.yml');
+            $loader->load(__DIR__.'/config/config.yaml');
         } else {
-            $loader->load(__DIR__.'/config/test/config.yml');
+            $loader->load(__DIR__.'/config/test/config.yaml');
         }
-        $loader->load(__DIR__.'/config/doctrine.yml');
+
+        $loader->load(__DIR__.'/config/doctrine.yaml');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

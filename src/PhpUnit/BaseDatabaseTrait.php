@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\PhpUnit;
 
+use function is_a;
 use LogicException;
+use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -22,37 +24,37 @@ trait BaseDatabaseTrait
     /**
      * @var string|null The name of the Doctrine manager to use
      */
-    protected static $manager;
+    protected static ?string $manager = null;
 
     /**
      * @var string[] The list of bundles where to look for fixtures
      */
-    protected static $bundles = [];
+    protected static array $bundles = [];
 
     /**
      * @var bool Append fixtures instead of purging
      */
-    protected static $append = false;
+    protected static bool $append = false;
 
     /**
      * @var bool Use TRUNCATE to purge
      */
-    protected static $purgeWithTruncate = true;
+    protected static bool $purgeWithTruncate = true;
 
     /**
      * @var string|null The name of the Doctrine shard to use
      */
-    protected static $shard;
+    protected static ?string $shard = null;
 
     /**
      * @var string|null The name of the Doctrine connection to use
      */
-    protected static $connection;
+    protected static ?string $connection = null;
 
     /**
      * @var array|null Contain loaded fixture from alice
      */
-    protected static $fixtures;
+    protected static ?array $fixtures = null;
 
     protected static function ensureKernelTestCase(): void
     {
@@ -63,7 +65,7 @@ trait BaseDatabaseTrait
 
     protected static function populateDatabase(): void
     {
-        $container = static::$container ?? static::$kernel->getContainer();
+        $container = static::$kernel->getContainer();
         static::$fixtures = $container->get('hautelook_alice.loader')->load(
             new Application(static::$kernel), // OK this is ugly... But there is no other way without redesigning LoaderInterface from the ground.
             $container->get('doctrine')->getManager(static::$manager),

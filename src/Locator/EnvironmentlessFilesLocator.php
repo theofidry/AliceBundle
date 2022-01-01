@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Locator;
 
+use function array_flip;
+use function array_keys;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Nelmio\Alice\IsAServiceTrait;
 
@@ -20,7 +22,7 @@ final class EnvironmentlessFilesLocator implements FixtureLocatorInterface
 {
     use IsAServiceTrait;
 
-    private $fixtureLocator;
+    private FixtureLocatorInterface $fixtureLocator;
 
     public function __construct(FixtureLocatorInterface $fixtureLocator)
     {

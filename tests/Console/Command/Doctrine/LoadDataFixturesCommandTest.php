@@ -38,30 +38,30 @@ class LoadDataFixturesCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testIsACommand()
+    public function testIsACommand(): void
     {
-        $this->assertTrue(is_a(DoctrineOrmLoadDataFixturesCommand::class, Command::class, true));
+        self::assertTrue(is_a(DoctrineOrmLoadDataFixturesCommand::class, Command::class, true));
     }
 
-    public function testCanSetTheCommandApplication()
+    public function testCanSetTheCommandApplication(): void
     {
         $application = new FrameworkBundleConsoleApplication(new DummyKernel());
 
         $command = new DoctrineOrmLoadDataFixturesCommand('dummy', new FakeDoctrineManagerRegistry(), new FakeLoader());
         $command->setApplication($application);
 
-        $this->assertSame($application, $command->getApplication());
+        self::assertSame($application, $command->getApplication());
     }
 
-    public function testCanResetTheCommandApplication()
+    public function testCanResetTheCommandApplication(): void
     {
         $command = new DoctrineOrmLoadDataFixturesCommand('dummy', new FakeDoctrineManagerRegistry(), new FakeLoader());
         $command->setApplication(null);
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
-    public function testThrowsAnExceptionIfInvalidApplicationIsGiven()
+    public function testThrowsAnExceptionIfInvalidApplicationIsGiven(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected application to be an instance of "Symfony\Bundle\FrameworkBundle\Console\Application".');
@@ -73,7 +73,7 @@ class LoadDataFixturesCommandTest extends TestCase
     /**
      * @group legacy
      */
-    public function testCallCommandWithoutArguments()
+    public function testCallCommandWithoutArguments(): void
     {
         $application = new FrameworkBundleConsoleApplication(new DummyKernel());
         $application->setAutoExit(false);
@@ -83,13 +83,13 @@ class LoadDataFixturesCommandTest extends TestCase
         ]);
         $input->setInteractive(false);
 
-        /** @var ManagerRegistry|ObjectProphecy $managerRegistryProphecy */
+        /** @var ObjectProphecy<ManagerRegistry> $managerRegistryProphecy */
         $managerRegistryProphecy = $this->prophesize(ManagerRegistry::class);
         $managerRegistryProphecy->getManager(null)->willReturn($manager = new FakeEntityManager());
         /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = $managerRegistryProphecy->reveal();
 
-        /** @var LoaderInterface|ObjectProphecy $loaderProphecy */
+        /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
             ->load($application, $manager, [], 'fake_env', false, false, null, false)
@@ -102,12 +102,12 @@ class LoadDataFixturesCommandTest extends TestCase
         $command->setApplication($application);
         $exit = $command->run($input, new NullOutput());
 
-        $this->assertEquals(0, $exit);
+        self::assertEquals(0, $exit);
         $loaderProphecy->load(Argument::cetera())->shouldHaveBeenCalledTimes(1);
         $managerRegistryProphecy->getManager(Argument::any())->shouldHaveBeenCalledTimes(1);
     }
 
-    public function testCallCommandWithArguments()
+    public function testCallCommandWithArguments(): void
     {
         $application = new FrameworkBundleConsoleApplication(new DummyKernel());
         $application->setAutoExit(false);
@@ -126,13 +126,13 @@ class LoadDataFixturesCommandTest extends TestCase
         ]);
         $input->setInteractive(false);
 
-        /** @var ManagerRegistry|ObjectProphecy $managerRegistryProphecy */
+        /** @var ObjectProphecy<ManagerRegistry> $managerRegistryProphecy */
         $managerRegistryProphecy = $this->prophesize(ManagerRegistry::class);
         $managerRegistryProphecy->getManager('DummyManager')->willReturn($manager = new FakeEntityManager());
         /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = $managerRegistryProphecy->reveal();
 
-        /** @var LoaderInterface|ObjectProphecy $loaderProphecy */
+        /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
             ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, 'shard_id', false)
@@ -145,12 +145,12 @@ class LoadDataFixturesCommandTest extends TestCase
         $command->setApplication($application);
         $exit = $command->run($input, new NullOutput());
 
-        $this->assertEquals(0, $exit);
+        self::assertEquals(0, $exit);
         $loaderProphecy->load(Argument::cetera())->shouldHaveBeenCalledTimes(1);
         $managerRegistryProphecy->getManager(Argument::any())->shouldHaveBeenCalledTimes(1);
     }
 
-    public function testCallCommandWithBundleAndNoBundlesFlags()
+    public function testCallCommandWithBundleAndNoBundlesFlags(): void
     {
         $application = new FrameworkBundleConsoleApplication(new DummyKernel());
         $application->setAutoExit(false);
@@ -170,13 +170,13 @@ class LoadDataFixturesCommandTest extends TestCase
         ]);
         $input->setInteractive(false);
 
-        /** @var ManagerRegistry|ObjectProphecy $managerRegistryProphecy */
+        /** @var ObjectProphecy<ManagerRegistry> $managerRegistryProphecy */
         $managerRegistryProphecy = $this->prophesize(ManagerRegistry::class);
         $managerRegistryProphecy->getManager('DummyManager')->willReturn($manager = new FakeEntityManager());
         /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = $managerRegistryProphecy->reveal();
 
-        /** @var LoaderInterface|ObjectProphecy $loaderProphecy */
+        /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
             ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, 'shard_id', true)
@@ -193,7 +193,7 @@ class LoadDataFixturesCommandTest extends TestCase
 
             $this->fail();
         } catch (DomainException $exception) {
-            $this->assertSame(
+            self::assertSame(
                 '--bundle and --no-bundles flags cannot be specified both in same time.',
                 $exception->getMessage()
             );

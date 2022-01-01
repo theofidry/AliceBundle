@@ -12,11 +12,13 @@
 declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /** @var ClassLoader $loader */
 $loader = require __DIR__.'/../../vendor/autoload.php';
-if (class_exists('Doctrine\Common\Annotations\AnnotationRegistry', true)) {
-    \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([$loader, 'loadClass']);
+
+if (class_exists(AnnotationRegistry::class, true)) {
+    AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 }
 
 return $loader;

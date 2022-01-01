@@ -24,11 +24,11 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class WithoutDoctrineKernel extends Kernel
 {
-    private $addedBundles = [];
-
     /**
-     * {@inheritdoc}
+     * @var list<Bundle>
      */
+    private array $addedBundles = [];
+
     public function registerBundles(): iterable
     {
         return array_merge(
@@ -47,11 +47,8 @@ class WithoutDoctrineKernel extends Kernel
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/config/config_without_doctrine.yml');
+        $loader->load(__DIR__.'/config/config_without_doctrine.yaml');
     }
 }

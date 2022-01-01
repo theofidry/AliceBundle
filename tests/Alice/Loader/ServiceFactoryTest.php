@@ -22,13 +22,13 @@ use PHPUnit\Framework\TestCase;
  */
 class ServiceFactoryTest extends TestCase
 {
-    public function testCanUseServiceFactory()
+    public function testCanUseServiceFactory(): void
     {
         $kernel = new TestKernel('ServiceFactoryTest', true);
         $kernel->boot();
 
         $loader = $kernel->getContainer()->get('nelmio_alice.file_loader');
-        $set = $loader->loadFile(__DIR__.'/../../../fixtures/fixture_files/city.yml');
+        $set = $loader->loadFile(__DIR__.'/../../../fixtures/fixture_files/city.yaml');
 
         $cityFactory = new CityFactory();
         $expected = [];
@@ -36,8 +36,8 @@ class ServiceFactoryTest extends TestCase
             $expected['city_'.$i] = $cityFactory->create((string) $i);
         }
 
-        $this->assertCount(\count($expected), $set->getObjects());
-        $this->assertEquals($expected, $set->getObjects());
+        self::assertCount(\count($expected), $set->getObjects());
+        self::assertEquals($expected, $set->getObjects());
 
         $kernel->shutdown();
     }

@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Loader;
 
-use Doctrine\DBAL\Sharding\PoolingShardConnection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Shards\DBAL\PoolingShardConnection;
 use Fidry\AliceDataFixtures\Bridge\Doctrine\Persister\ObjectManagerPersister;
 use Fidry\AliceDataFixtures\LoaderInterface;
 use Fidry\AliceDataFixtures\Persistence\PersisterAwareInterface;
 use Fidry\AliceDataFixtures\Persistence\PersisterInterface;
 use Fidry\AliceDataFixtures\Persistence\PurgeMode;
+use function get_class;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\LoaderInterface as AliceBundleLoaderInterface;
@@ -29,19 +30,20 @@ use LogicException;
 use Nelmio\Alice\IsAServiceTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterface
 {
     use IsAServiceTrait;
 
-    private $bundleResolver;
-    private $fixtureLocator;
-    /** @var LoaderInterface|PersisterAwareInterface */
-    private $purgeLoader;
-    /** @var LoaderInterface|PersisterAwareInterface */
-    private $appendLoader;
-    private $logger;
+    private BundleResolverInterface $bundleResolver;
+    private FixtureLocatorInterface $fixtureLocator;
+    /** @var LoaderInterface&PersisterAwareInterface */
+    private LoaderInterface $purgeLoader;
+    /** @var LoaderInterface&PersisterAwareInterface */
+    private LoaderInterface $appendLoader;
+    private LoggerInterface $logger;
 
     public function __construct(
         BundleResolverInterface $bundleResolver,
@@ -76,9 +78,6 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withLogger(LoggerInterface $logger): self
     {
         return new self(
@@ -90,9 +89,6 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(
         Application $application,
         EntityManagerInterface $manager,
@@ -102,7 +98,7 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         bool $purgeWithTruncate,
         string $shard = null,
         bool $noBundles = false
-    ) {
+    ): array {
         if ($append && $purgeWithTruncate) {
             throw new LogicException(
                 'Cannot append loaded fixtures and at the same time purge the database. Choose one.'
@@ -153,7 +149,7 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         array $files,
         array $parameters,
         ?PurgeMode $purgeMode
-    ) {
+    ): array {
         $persister = $this->createPersister($manager);
 
         $loader = $loader->withPersister($persister);
@@ -164,6 +160,7 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
     private function connectToShardConnection(EntityManagerInterface $manager, string $shard)
     {
         $connection = $manager->getConnection();
+
         if ($connection instanceof PoolingShardConnection) {
             $connection->connect($shard);
 
@@ -176,7 +173,7 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
                 .' of "%s", got "%s" instead.',
                 $shard,
                 PoolingShardConnection::class,
-                \get_class($connection)
+                get_class($connection)
             )
         );
     }

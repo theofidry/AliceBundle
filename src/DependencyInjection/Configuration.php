@@ -15,7 +15,6 @@ namespace Hautelook\AliceBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @private
@@ -25,31 +24,11 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('hautelook_alice');
 
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // BC for symfony/config < 4.2
-            $rootNode = $treeBuilder->root('hautelook_alice');
-        }
-
-        $defaultRootDirsValue = [
-            '%kernel.root_dir%',
-            '%kernel.project_dir%',
-        ];
-        if (Kernel::VERSION_ID >= 50000) {
-            $defaultRootDirsValue = [
-                '%kernel.project_dir%',
-            ];
-        }
-
-        $rootNode
+        $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('fixtures_path')
                     ->info('Path(s) to which to look for fixtures relative to the bundle/root directory paths.')
@@ -59,7 +38,9 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('root_dirs')
                     ->info('List of root directories into which to look for the fixtures.')
-                    ->defaultValue($defaultRootDirsValue)
+                    ->defaultValue([
+                        '%kernel.project_dir%',
+                    ])
                     ->scalarPrototype()
                 ->end()
             ->end()
