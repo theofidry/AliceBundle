@@ -18,6 +18,7 @@ use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
@@ -26,6 +27,8 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
  */
 class NoBundleResolverTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testIsABundleResolver()
     {
         $this->assertTrue(is_a(NoBundleResolver::class, BundleResolverInterface::class, true));

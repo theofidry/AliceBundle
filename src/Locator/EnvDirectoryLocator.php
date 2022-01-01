@@ -88,7 +88,7 @@ final class EnvDirectoryLocator implements FixtureLocatorInterface
         // this sort helps to set an order with filename
         // ( "001-root-level-fixtures.yml", "002-another-level-fixtures.yml", ... )
         $files = $files->sort(function ($a, $b) {
-            return strcasecmp($a, $b);
+            return strcasecmp((string) $a, (string) $b);
         });
 
         $fixtureFiles = [];

@@ -56,10 +56,6 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
      */
     protected function setUp(): void
     {
-        if (false === class_exists(DoctrineBundle::class, true)) {
-            $this->markTestSkipped('DoctrineBundle is not installed.');
-        }
-
         $this->kernel = new TestKernel('LoadDataFixturesCommandIntegrationTest', true);
         $this->kernel->boot();
         $this->application = new Application($this->kernel);

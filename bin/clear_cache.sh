@@ -9,4 +9,4 @@
 # file that was distributed with this source code.
 #
 
-rm -rf fixtures/Functional/cache/*ch
+rm -rf fixtures/Functional/cache/*

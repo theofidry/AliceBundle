@@ -22,6 +22,7 @@ use Hautelook\AliceBundle\Persistence\FakeDoctrineManagerRegistry;
 use Hautelook\AliceBundle\Persistence\ObjectMapper\FakeEntityManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkBundleConsoleApplication;
 use Symfony\Component\Console\Application as ConsoleApplication;
@@ -35,6 +36,8 @@ use Symfony\Component\Console\Output\NullOutput;
  */
 class LoadDataFixturesCommandTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testIsACommand()
     {
         $this->assertTrue(is_a(DoctrineOrmLoadDataFixturesCommand::class, Command::class, true));
@@ -163,7 +166,7 @@ class LoadDataFixturesCommandTest extends TestCase
             '--shard' => 'shard_id',
             '--append' => null,
             '--purge-with-truncate' => null,
-            '--no-bundles',
+            '--no-bundles' => null,
         ]);
         $input->setInteractive(false);
 

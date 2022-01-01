@@ -4,7 +4,8 @@
          bootstrap="fixtures/Functional/bootstrap.php"
          colors="true"
          forceCoversAnnotation="true"
-         verbose="true">
+         verbose="true"
+         stopOnFailure="true">
 
     <php>
         <server name="APP_ENV" value="test" force="true" />

@@ -1,12 +1,5 @@
 doctrine:
     dbal:
-        default_connection: default
-        connections:
-            default:
-                driver: pdo_mysql
-                dbname: hautelook_alice_bundle
-                port: 3307
-                user: root
-                password: password
+        url: 'mysql://root:password@127.0.0.1:3307/hautelook_alice_bundle?serverVersion=8.0'
     orm:
         auto_mapping: true

@@ -16,6 +16,7 @@ namespace Hautelook\AliceBundle\Locator;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use ReflectionClass;
 
@@ -24,6 +25,8 @@ use ReflectionClass;
  */
 class EnvironmentlessFilesLocatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testIsAFixtureLocator()
     {
         $this->assertTrue(is_a(EnvironmentlessFilesLocator::class, FixtureLocatorInterface::class, true));
