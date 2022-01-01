@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Hautelook\AliceBundle\Functional\TestBundle\DataFixtures\Processor;
 
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Brand;

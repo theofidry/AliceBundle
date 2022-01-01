@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Hautelook\AliceBundle\HttpKernel;
 
 use Hautelook\AliceBundle\NotCallableTrait;
@@ -198,6 +200,4 @@ class DummyKernel implements KernelInterface
     {
         // TODO: Implement getBuildDir() method.
     }
-
-
 }

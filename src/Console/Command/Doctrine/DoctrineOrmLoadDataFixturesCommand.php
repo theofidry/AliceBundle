@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -91,7 +93,8 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'The shard database id to use for this command.'
             )
-            ->addOption('purge-with-truncate',
+            ->addOption(
+                'purge-with-truncate',
                 null,
                 InputOption::VALUE_NONE,
                 'Purge data by using a database-level TRUNCATE statement when using Doctrine fixtures.'
@@ -127,11 +130,11 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
         // Ask him to confirm his choice
         if ($input->isInteractive() && !$input->getOption('append')) {
             if (false === $this->askConfirmation(
-                    $input,
-                    $output,
-                    '<question>Careful, database will be purged. Do you want to continue y/N ?</question>',
-                    false
-                )
+                $input,
+                $output,
+                '<question>Careful, database will be purged. Do you want to continue y/N ?</question>',
+                false
+            )
             ) {
                 return 0;
             }
