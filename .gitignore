@@ -1,8 +1,9 @@
 /composer.lock
 /coverage.xml
 /.phar/
+/.php-cs-fixer.cache
 /.php_cs.cache
 /phpunit.xml
 /vendor/
 /var/
-.phpunit.result.cache
+/.phpunit.result.cache

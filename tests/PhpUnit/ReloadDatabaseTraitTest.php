@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
+ * @coversNothing
  */
 class ReloadDatabaseTraitTest extends KernelTestCase
 {

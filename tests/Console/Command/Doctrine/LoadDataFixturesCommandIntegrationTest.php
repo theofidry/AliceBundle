@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -70,8 +72,10 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
 
         // Create required MySQL databases for fixtures
         $this->runConsole('doctrine:database:create', ['--if-not-exists' => true, '--connection' => 'default']);
-        $this->runConsole('doctrine:database:create',
-            ['--if-not-exists' => true, '--connection' => 'default', '--shard' => 1]);
+        $this->runConsole(
+            'doctrine:database:create',
+            ['--if-not-exists' => true, '--connection' => 'default', '--shard' => 1]
+        );
 
         // Reset fixtures schemas
         foreach ($doctrine->getManagers() as $name => $manager) {
