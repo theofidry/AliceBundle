@@ -1,0 +1,92 @@
+name: CI
+
+on:
+    pull_request:
+    push:
+        branches: [ master ]
+
+env:
+    SHELL_VERBOSITY: 1
+
+jobs:
+    php-cs-fixer:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php:
+                    - '8.1'
+                dependencies: ['highest']
+            fail-fast: false
+        env:
+            PHP_CS_FIXER_FUTURE_MODE: '1'
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: intl, bcmath, curl, openssl, mbstring
+                    ini-values: memory_limit=-1
+                    tools: composer, php-cs-fixer
+                    coverage: none
+
+            -   name: Run PHP-CS-Fixer fix
+                run: php-cs-fixer fix --dry-run --diff --ansi
+
+    phpunit:
+        name: PHPUnit (PHP ${{ matrix.php }})
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php:
+                    - '7.4'
+                    - '8.0'
+                    - '8.1'
+                variant: ['normal']
+                dependencies: ['highest']
+                include:
+                    -   php: '7.4'
+                        variant: 'symfony/symfony:"^5.4"'
+                        dependencies: 'highest'
+                        composer-flags: ''
+                    -   php: '7.4'
+                        variant: 'symfony/symfony:"^5.4"'
+                        dependencies: 'lowest'
+            fail-fast: false
+
+        services:
+            # To keep in sync with fixtures/Functional/config/doctrine.yml and docker-compose.yaml
+            mysql:
+                image: mysql:8.0
+                ports:
+                    - 3307:3306
+                env:
+                    MYSQL_DATABASE: hautelook_alice_bundle
+                    MYSQL_ROOT_USER: root
+                    MYSQL_ROOT_PASSWORD: password
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Configure Symfony (variant)
+                if: matrix.variant != 'normal'
+                run: composer require --dev --no-update ${{ matrix.variant }}
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    tools: composer
+                    extensions: intl, bcmath, curl, openssl, mbstring
+                    ini-values: memory_limit=-1
+
+            -   name: Install Composer dependencies (${{ matrix.dependencies }})
+                uses: ramsey/composer-install@v1
+                with:
+                    dependency-versions: ${{ matrix.dependencies }}
+                    composer-options: "--prefer-dist"
+
+            -   name: Run tests
+                run: vendor/bin/phpunit --verbose --stop-on-failure
