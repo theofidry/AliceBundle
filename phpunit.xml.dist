@@ -19,15 +19,10 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./</directory>
-            <exclude>
-                <directory>fixtures</directory>
-                <directory>vendor</directory>
-                <directory>tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+    </coverage>
 
 </phpunit>
