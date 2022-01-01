@@ -25,15 +25,15 @@
 
 ### Upgrading the data loaders
 
-1. You data loader should now either extend [`Hautelook\AliceBundle\Doctrine\DataFixtures\AbstractLoader`](https://github.com/hautelook/AliceBundle/tree/1.x/src/Doctrine/DataFixtures/AbstractLoader.php) or implement [`Hautelook\AliceBundle\Doctrine\DataFixtures\LoaderInterface`](https://github.com/hautelook/AliceBundle/tree/1.x/src/Doctrine/DataFixtures/LoaderInterface.php).
+1. You data loader should now either extend [`Hautelook\AliceBundle\Doctrine\DataFixtures\AbstractLoader`](https://github.com/theofidry/AliceBundle/tree/1.x/src/Doctrine/DataFixtures/AbstractLoader.php) or implement [`Hautelook\AliceBundle\Doctrine\DataFixtures\LoaderInterface`](https://github.com/theofidry/AliceBundle/tree/1.x/src/Doctrine/DataFixtures/LoaderInterface.php).
 
 2. If you were overriding the `::load()` function of the data loader, you should not need it anymore now:
-  * Custom Faker providers can now be registered, cf [Custom Faker Providers](https://github.com/hautelook/AliceBundle/tree/1.x/src/Resources/doc/faker-providers.md).
-  * Custom Alice processors can now be registered, cf [Custom Processors](https://github.com/hautelook/AliceBundle/tree/1.x/src/Resources/doc/alice-processors.md).
+  * Custom Faker providers can now be registered, cf [Custom Faker Providers](https://github.com/theofidry/AliceBundle/tree/1.x/src/Resources/doc/faker-providers.md).
+  * Custom Alice processors can now be registered, cf [Custom Processors](https://github.com/theofidry/AliceBundle/tree/1.x/src/Resources/doc/alice-processors.md).
 
 3. If you had very long path for some fixtures because you needed to refer to the fixtures of another bundle, you can now use the bundle annotation `@Bundlename`.
 
-4. If you had several data loaders to manage different set of fixtures depending of your environment, now you can [devide your fixtures by environment](https://github.com/hautelook/AliceBundle/tree/1.x/src/Resources/doc/advanced-usage.md#environment-specific-fixtures) instead of having to use and specify a data loader for that.
+4. If you had several data loaders to manage different set of fixtures depending of your environment, now you can [devide your fixtures by environment](https://github.com/theofidry/AliceBundle/tree/1.x/src/Resources/doc/advanced-usage.md#environment-specific-fixtures) instead of having to use and specify a data loader for that.
 
 
 ### Doctrine command
@@ -43,7 +43,7 @@ You should now rely on the bundle command `hautelook_alice:doctrine:fixtures:loa
 
 ### Remove DoctrineFixturesBundle
 
-As explained [here](https://github.com/hautelook/AliceBundle/tree/1.x/src/Resources/doc/doctrine-fixtures-bundle.md), there is no obligation to do so. HautelookAliceBundle is fully compatible with it. However it does not make sense to use the both of them together. It is recommended to
+As explained [here](https://github.com/theofidry/AliceBundle/tree/1.x/src/Resources/doc/doctrine-fixtures-bundle.md), there is no obligation to do so. HautelookAliceBundle is fully compatible with it. However it does not make sense to use the both of them together. It is recommended to
 choose only one.
 
 [Back to the documentation](README.md)

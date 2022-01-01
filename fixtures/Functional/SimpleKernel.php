@@ -28,7 +28,7 @@ class SimpleKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return [
             new SimpleBundle(),
@@ -50,7 +50,7 @@ class SimpleKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function locateResource($name, $dir = null, $first = true)
+    public function locateResource($name, $dir = null, $first = true): string
     {
         if (null !== $this->overrideFirst) {
             $first = $this->overrideFirst;

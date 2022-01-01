@@ -41,7 +41,7 @@ trait RefreshTestTrait
         $this->assertInitialState($this->getManager());
     }
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return TestKernel::class;
     }
