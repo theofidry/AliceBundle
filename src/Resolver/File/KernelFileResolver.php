@@ -13,25 +13,27 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Resolver\File;
 
+use function array_keys;
 use Fidry\AliceDataFixtures\FileResolverInterface;
+use function file_exists;
 use InvalidArgumentException;
+use function is_file;
 use Nelmio\Alice\IsAServiceTrait;
+use function realpath;
+use function sprintf;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class KernelFileResolver implements FileResolverInterface
 {
     use IsAServiceTrait;
 
-    private $kernel;
+    private KernelInterface $kernel;
 
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(array $filePaths): array
     {
         $resolvedFixtures = [];

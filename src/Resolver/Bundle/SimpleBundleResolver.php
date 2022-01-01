@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Resolver\Bundle;
 
+use function array_values;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Exception\Resolver\BundleNotFoundException;
 use Nelmio\Alice\IsAServiceTrait;
@@ -22,10 +23,7 @@ final class SimpleBundleResolver implements BundleResolverInterface
 {
     use IsAServiceTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveBundles(Application $application, array $names)
+    public function resolveBundles(Application $application, array $names): array
     {
         $bundles = $application->getKernel()->getBundles();
 

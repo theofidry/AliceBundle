@@ -20,9 +20,9 @@ interface FixtureLocatorInterface
     /**
      * Locales all the fixture files to load.
      *
-     * @param BundleInterface[] $bundles
+     * @param list<BundleInterface> $bundles
      *
-     * @return string[] Fixtures files paths
+     * @return list<string> Fixtures files paths
      */
     public function locateFiles(array $bundles, string $environment): array;
 }

@@ -15,9 +15,6 @@ namespace Hautelook\AliceBundle\Locator\EnvDirectoryLocator\EmptyBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class EmptyBundle extends Bundle
 {
 }

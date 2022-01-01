@@ -13,21 +13,16 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\FixtureLocator;
 
+use function func_get_args;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\NotCallableTrait;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class FakeFixtureLocator implements FixtureLocatorInterface
 {
     use NotCallableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function locateFiles(array $bundles, string $environment): array
     {
-        $this->__call(__METHOD__, \func_get_args());
+        $this->__call(__METHOD__, func_get_args());
     }
 }

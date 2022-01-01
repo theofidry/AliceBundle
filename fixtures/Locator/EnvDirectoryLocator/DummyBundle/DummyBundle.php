@@ -15,9 +15,6 @@ namespace Hautelook\AliceBundle\Locator\EnvDirectoryLocator\DummyBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class DummyBundle extends Bundle
 {
 }

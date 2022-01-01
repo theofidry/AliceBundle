@@ -44,5 +44,5 @@ interface LoaderInterface
         bool $purgeWithTruncate,
         string $shard = null,
         bool $noBundles = false
-    );
+    ): array;
 }

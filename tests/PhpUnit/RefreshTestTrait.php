@@ -22,10 +22,10 @@ use Hautelook\AliceBundle\Functional\TestKernel;
  */
 trait RefreshTestTrait
 {
-    public function testRefresh()
+    public function testRefresh(): void
     {
         $manager = $this->getManager();
-        $this->assertInitialState($manager);
+        self::assertInitialState($manager);
 
         $newBrand = new Brand();
         $newBrand->setName('Les-Tilleuls.coop');
@@ -33,12 +33,12 @@ trait RefreshTestTrait
         $manager->flush();
 
         $brands = $manager->getRepository(Brand::class)->findAll();
-        $this->assertCount(11, $brands);
+        self::assertCount(11, $brands);
     }
 
-    public function testShouldBeRefreshed()
+    public function testShouldBeRefreshed(): void
     {
-        $this->assertInitialState($this->getManager());
+        self::assertInitialState($this->getManager());
     }
 
     protected static function getKernelClass(): string
@@ -57,6 +57,6 @@ trait RefreshTestTrait
     private function assertInitialState(EntityManager $manager): void
     {
         $brands = $manager->getRepository(Brand::class)->findAll();
-        $this->assertCount(10, $brands);
+        self::assertCount(10, $brands);
     }
 }

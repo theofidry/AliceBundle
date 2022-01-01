@@ -21,8 +21,8 @@ final class KernelFileLocator implements FileLocatorInterface
 {
     use IsAServiceTrait;
 
-    private $fileLocator;
-    private $kernel;
+    private FileLocatorInterface $fileLocator;
+    private KernelInterface $kernel;
 
     public function __construct(FileLocatorInterface $decoratedFileLocator, KernelInterface $kernel)
     {
@@ -30,9 +30,6 @@ final class KernelFileLocator implements FileLocatorInterface
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function locate(string $name, string $currentPath = null): string
     {
         if ('@' === $name[0]) {

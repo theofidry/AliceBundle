@@ -19,6 +19,8 @@ use Hautelook\AliceBundle\LoaderInterface;
 use Hautelook\AliceBundle\Logger\FakeLogger;
 use Hautelook\AliceBundle\LoggerAwareInterface;
 use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
+use InvalidArgumentException;
+use function is_a;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -27,26 +29,32 @@ use ReflectionClass;
  */
 class DoctrineOrmLoaderTest extends TestCase
 {
-    public function testIsALoader()
+    public function testIsALoader(): void
     {
-        $this->assertTrue(is_a(DoctrineOrmLoader::class, LoaderInterface::class, true));
+        self::assertTrue(is_a(DoctrineOrmLoader::class, LoaderInterface::class, true));
     }
 
-    public function testIsLoggerAware()
+    public function testIsLoggerAware(): void
     {
-        $this->assertTrue(is_a(DoctrineOrmLoader::class, LoggerAwareInterface::class, true));
+        self::assertTrue(is_a(DoctrineOrmLoader::class, LoggerAwareInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(DoctrineOrmLoader::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(DoctrineOrmLoader::class))->isCloneable());
     }
 
-    public function testDataFixtureLoaderMustBePersisterAware()
+    public function testDataFixtureLoaderMustBePersisterAware(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected loader to be an instance of "Fidry\AliceDataFixtures\Persistence\PersisterAwareInterface".');
 
-        new DoctrineOrmLoader(new FakeBundleResolver(), new FakeFixtureLocator(), new FakeLoader(), new FakeLoader(), new FakeLogger());
+        new DoctrineOrmLoader(
+            new FakeBundleResolver(),
+            new FakeFixtureLocator(),
+            new FakeLoader(),
+            new FakeLoader(),
+            new FakeLogger(),
+        );
     }
 }

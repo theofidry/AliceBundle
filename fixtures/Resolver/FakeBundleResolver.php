@@ -13,22 +13,17 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Resolver;
 
+use function func_get_args;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\NotCallableTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class FakeBundleResolver implements BundleResolverInterface
 {
     use NotCallableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveBundles(Application $application, array $names)
+    public function resolveBundles(Application $application, array $names): array
     {
-        $this->__call(__METHOD__, \func_get_args());
+        $this->__call(__METHOD__, func_get_args());
     }
 }

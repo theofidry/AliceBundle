@@ -25,7 +25,7 @@ trait RefreshDatabaseTrait
 {
     use BaseDatabaseTrait;
 
-    protected static $dbPopulated = false;
+    protected static bool $dbPopulated = false;
 
     protected static function bootKernel(array $options = []): KernelInterface
     {
@@ -37,15 +37,15 @@ trait RefreshDatabaseTrait
             static::$dbPopulated = true;
         }
 
-        $container = static::$container ?? static::$kernel->getContainer();
+        $container = static::$kernel->getContainer();
         $container->get('doctrine')->getConnection(static::$connection)->beginTransaction();
 
         return $kernel;
     }
 
-    protected static function ensureKernelShutdown()
+    protected static function ensureKernelShutdown(): void
     {
-        $container = static::$container ?? null;
+        $container = null;
         if (null === $container && null !== static::$kernel) {
             $container = static::$kernel->getContainer();
         }

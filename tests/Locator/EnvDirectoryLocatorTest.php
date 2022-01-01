@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Locator;
 
+use const DIRECTORY_SEPARATOR;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\AnotherDummyBundle\AnotherDummyBundle;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\DummyBundle\DummyBundle;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\EmptyBundle\EmptyBundle;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\OneMoreDummyBundle\OneMoreDummyBundle;
 use PHPUnit\Framework\TestCase;
+use function realpath;
 use ReflectionClass;
 
 /**
@@ -26,29 +28,29 @@ use ReflectionClass;
  */
 class EnvDirectoryLocatorTest extends TestCase
 {
-    public function testIsAFixtureLocator()
+    public function testIsAFixtureLocator(): void
     {
-        $this->assertTrue(is_a(EnvDirectoryLocator::class, FixtureLocatorInterface::class, true));
+        self::assertTrue(is_a(EnvDirectoryLocator::class, FixtureLocatorInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(EnvDirectoryLocator::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(EnvDirectoryLocator::class))->isCloneable());
     }
 
     /**
      * @dataProvider provideSets
      */
-    public function testGetFilesFromABundle(array $bundles, string $environment, array $paths, array $expected)
+    public function testGetFilesFromABundle(array $bundles, string $environment, array $paths, array $expected): void
     {
         $invalidPath = '';
         $locator = new EnvDirectoryLocator($paths, [$invalidPath]);
         $actual = $locator->locateFiles($bundles, $environment);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        self::assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function provideSets()
+    public function provideSets(): ?\Generator
     {
         yield 'bundle without any resources' => [
             [new EmptyBundle()],
@@ -126,7 +128,9 @@ class EnvDirectoryLocatorTest extends TestCase
             'dev',
             ['resources'],
             [
-                realpath(__DIR__.'/../../fixtures/Locator/EnvDirectoryLocator/AnotherDummyBundle/resources/dev/file10.yml'),
+                realpath(
+                    __DIR__.'/../../fixtures/Locator/EnvDirectoryLocator/AnotherDummyBundle/resources/dev/file10.yaml'
+                ),
             ],
         ];
 
@@ -146,26 +150,26 @@ class EnvDirectoryLocatorTest extends TestCase
         string $environment,
         array $paths,
         array $expected
-    ) {
+    ): void {
         $invalidPath = '';
         $locator = new EnvDirectoryLocator($paths, [$invalidPath]);
         $actual = $locator->locateFiles($bundles, $environment);
 
-        $this->assertEqualsCanonicalizing($expected, $actual);
+        self::assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function provideSetsForSeveralBundles()
+    public function provideSetsForSeveralBundles(): ?\Generator
     {
-        $baseDir = 'Resources'.\DIRECTORY_SEPARATOR.'fixtures';
-        $baseDir2 = 'Resources'.\DIRECTORY_SEPARATOR.'fixtures2';
+        $baseDir = 'Resources'.DIRECTORY_SEPARATOR.'fixtures';
+        $baseDir2 = 'Resources'.DIRECTORY_SEPARATOR.'fixtures2';
         $env = 'test';
 
         $bundleA = new DummyBundle();
         $bundleB = new OneMoreDummyBundle();
 
-        $prefixA1 = $bundleA->getPath().\DIRECTORY_SEPARATOR.$baseDir.\DIRECTORY_SEPARATOR.$env.\DIRECTORY_SEPARATOR;
-        $prefixA2 = $bundleA->getPath().\DIRECTORY_SEPARATOR.$baseDir2.\DIRECTORY_SEPARATOR.$env.\DIRECTORY_SEPARATOR;
-        $prefixB = $bundleB->getPath().\DIRECTORY_SEPARATOR.$baseDir.\DIRECTORY_SEPARATOR.$env.\DIRECTORY_SEPARATOR;
+        $prefixA1 = $bundleA->getPath().DIRECTORY_SEPARATOR.$baseDir.DIRECTORY_SEPARATOR.$env.DIRECTORY_SEPARATOR;
+        $prefixA2 = $bundleA->getPath().DIRECTORY_SEPARATOR.$baseDir2.DIRECTORY_SEPARATOR.$env.DIRECTORY_SEPARATOR;
+        $prefixB = $bundleB->getPath().DIRECTORY_SEPARATOR.$baseDir.DIRECTORY_SEPARATOR.$env.DIRECTORY_SEPARATOR;
 
         yield 'several bundles with fixture files' => [
             [$bundleA, $bundleB],
@@ -186,11 +190,11 @@ class EnvDirectoryLocatorTest extends TestCase
         ];
     }
 
-    public function testGetFilesFromProjectDir()
+    public function testGetFilesFromProjectDir(): void
     {
         $basePath = realpath(__DIR__.'/../..');
 
         $locator = new EnvDirectoryLocator(['fixtures/fixture_files'], [$basePath]);
-        $this->assertSame([$basePath.'/fixtures/fixture_files/city.yml'], $locator->locateFiles([], ''));
+        self::assertSame([$basePath.'/fixtures/fixture_files/city.yaml'], $locator->locateFiles([], ''));
     }
 }

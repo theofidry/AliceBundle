@@ -15,6 +15,8 @@ namespace Hautelook\AliceBundle\Alice\Generator\Instantiator\Chainable;
 
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\City;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\CityFactory;
+use function is_a;
+use LogicException;
 use Nelmio\Alice\Definition\Fixture\SimpleFixture;
 use Nelmio\Alice\Definition\MethodCall\MethodCallWithReference;
 use Nelmio\Alice\Definition\MethodCallBag;
@@ -28,6 +30,7 @@ use Nelmio\Alice\Generator\Instantiator\ChainableInstantiatorInterface;
 use Nelmio\Alice\Generator\ResolvedFixtureSet;
 use Nelmio\Alice\ObjectBag;
 use Nelmio\Alice\ParameterBag;
+use Nelmio\Alice\Throwable\Exception\Generator\Instantiator\InstantiationException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Container;
@@ -37,25 +40,25 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class InstantiatedReferenceInstantiatorTest extends TestCase
 {
-    public function testIsAChainableInstantiator()
+    public function testIsAChainableInstantiator(): void
     {
-        $this->assertTrue(is_a(InstantiatedReferenceInstantiator::class, ChainableInstantiatorInterface::class, true));
+        self::assertTrue(is_a(InstantiatedReferenceInstantiator::class, ChainableInstantiatorInterface::class, true));
     }
 
-    public function testIsNotClonable()
+    public function testIsNotClonable(): void
     {
-        $this->assertFalse((new ReflectionClass(InstantiatedReferenceInstantiator::class))->isCloneable());
+        self::assertFalse((new ReflectionClass(InstantiatedReferenceInstantiator::class))->isCloneable());
     }
 
-    public function testCannotInstantiateFixtureWithDefaultConstructor()
+    public function testCannotInstantiateFixtureWithDefaultConstructor(): void
     {
         $fixture = new SimpleFixture('dummy', 'Dummy', new SpecificationBag(null, new PropertyBag(), new MethodCallBag()));
         $instantiator = new InstantiatedReferenceInstantiator();
 
-        $this->assertFalse($instantiator->canInstantiate($fixture));
+        self::assertFalse($instantiator->canInstantiate($fixture));
     }
 
-    public function testCannotInstantiateFixtureWithStaticFactoryMethodCallConstructor()
+    public function testCannotInstantiateFixtureWithStaticFactoryMethodCallConstructor(): void
     {
         $fixture = new SimpleFixture(
             'dummy',
@@ -71,10 +74,10 @@ class InstantiatedReferenceInstantiatorTest extends TestCase
         );
         $instantiator = new InstantiatedReferenceInstantiator();
 
-        $this->assertFalse($instantiator->canInstantiate($fixture));
+        self::assertFalse($instantiator->canInstantiate($fixture));
     }
 
-    public function testCanInstantiateFixtureWitAServiceReferenceFactory()
+    public function testCanInstantiateFixtureWitAServiceReferenceFactory(): void
     {
         $fixture = new SimpleFixture(
             'dummy',
@@ -90,12 +93,12 @@ class InstantiatedReferenceInstantiatorTest extends TestCase
         );
         $instantiator = new InstantiatedReferenceInstantiator();
 
-        $this->assertTrue($instantiator->canInstantiate($fixture));
+        self::assertTrue($instantiator->canInstantiate($fixture));
     }
 
-    public function testThrowsAnExceptionIfNoContainerIsSetWhilstTryingToInstantiateObject()
+    public function testThrowsAnExceptionIfNoContainerIsSetWhilstTryingToInstantiateObject(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Expected instantiator method "Hautelook\AliceBundle\Alice\Generator\Instantiator\Chainable\InstantiatedReferenceInstantiator::instantiate" to be used only if it has a container, but no container could be found.');
 
         $fixture = new SimpleFixture(
@@ -121,7 +124,7 @@ class InstantiatedReferenceInstantiatorTest extends TestCase
         $instantiator->instantiate($fixture, $set, new GenerationContext());
     }
 
-    public function testInstantiatesObjectWithFactoryAndArguments()
+    public function testInstantiatesObjectWithFactoryAndArguments(): void
     {
         $fixture = new SimpleFixture(
             'dummy',
@@ -152,12 +155,12 @@ class InstantiatedReferenceInstantiatorTest extends TestCase
         $expected = $cityFactory->create('foo');
         $actual = $set->getObjects()->get($fixture)->getInstance();
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
-    public function testThrowsAnExceptionIfTheInstantiatedFixtureIsNotOfTheClassExpected()
+    public function testThrowsAnExceptionIfTheInstantiatedFixtureIsNotOfTheClassExpected(): void
     {
-        $this->expectException(\Nelmio\Alice\Throwable\Exception\Generator\Instantiator\InstantiationException::class);
+        $this->expectException(InstantiationException::class);
         $this->expectExceptionMessage('Instantiated fixture was expected to be an instance of "Dummy". Got "Hautelook\AliceBundle\Functional\TestBundle\Entity\City" instead.');
 
         $fixture = new SimpleFixture(
@@ -178,7 +181,7 @@ class InstantiatedReferenceInstantiatorTest extends TestCase
             )
         );
         $container = new Container();
-        $container->set('city_factory', $cityFactory = new CityFactory());
+        $container->set('city_factory', new CityFactory());
 
         $instantiator = new InstantiatedReferenceInstantiator();
         $instantiator->setContainer($container);

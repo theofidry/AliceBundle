@@ -14,9 +14,21 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\DependencyInjection;
 
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
+use Fidry\AliceDataFixtures\Loader\FileResolverLoader;
+use Fidry\AliceDataFixtures\LoaderInterface;
+use Hautelook\AliceBundle\BundleResolverInterface;
+use Hautelook\AliceBundle\Console\Command\Doctrine\DoctrineOrmLoadDataFixturesCommand;
+use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\Functional\AppKernel;
 use Hautelook\AliceBundle\Functional\ConfigurableKernel;
 use Hautelook\AliceBundle\Functional\WithoutDoctrineKernel;
+use Hautelook\AliceBundle\Loader\DoctrineOrmLoader;
+use Hautelook\AliceBundle\LoaderInterface as HautelookLoaderInterface;
+use Hautelook\AliceBundle\Locator\EnvDirectoryLocator;
+use Hautelook\AliceBundle\Locator\EnvironmentlessFilesLocator;
+use Hautelook\AliceBundle\Resolver\Bundle\NoBundleResolver;
+use Hautelook\AliceBundle\Resolver\Bundle\SimpleBundleResolver;
+use LogicException;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -27,27 +39,24 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class HautelookAliceBundleTest extends KernelTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         parent::tearDown();
         static::$class = null;
     }
 
-    public function testCannotBootIfFidryAliceDataFixturesBundleIsNotRegistered()
+    public function testCannotBootIfFidryAliceDataFixturesBundleIsNotRegistered(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectExceptionMessage('To register "Hautelook\AliceBundle\HautelookAliceBundle", you also need: "Doctrine\Bundle\DoctrineBundle\DoctrineBundle", "Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle".');
 
         self::$kernel = new ConfigurableKernel('ConfigurableKernel0', true);
         self::$kernel->boot();
     }
 
-    public function testWillReplaceFixtureLoadCommandWithErrorInformationCommandIfDoctrineBundleIsNotRegistered()
+    public function testWillReplaceFixtureLoadCommandWithErrorInformationCommandIfDoctrineBundleIsNotRegistered(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectExceptionMessage('To register "Hautelook\AliceBundle\HautelookAliceBundle", you also need: "Doctrine\Bundle\DoctrineBundle\DoctrineBundle".');
 
         self::$kernel = new WithoutDoctrineKernel('ConfigurableKernel1', true);
@@ -56,79 +65,76 @@ class HautelookAliceBundleTest extends KernelTestCase
         self::$kernel->boot();
     }
 
-    public function testServiceRegistration()
+    public function testServiceRegistration(): void
     {
-        parent::bootKernel(['environment' => 'public', 'debug' => true]);
+        self::bootKernel(['environment' => 'public', 'debug' => true]);
         $container = self::getContainer();
 
         // Resolvers
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Resolver\Bundle\SimpleBundleResolver::class,
+        self::assertInstanceOf(
+            SimpleBundleResolver::class,
             $container->get('hautelook_alice.resolver.bundle.simple_resolver')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Resolver\Bundle\NoBundleResolver::class,
+        self::assertInstanceOf(
+            NoBundleResolver::class,
             $container->get('hautelook_alice.resolver.bundle.no_bundle_resolver')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\BundleResolverInterface::class,
+        self::assertInstanceOf(
+            BundleResolverInterface::class,
             $container->get('hautelook_alice.resolver.bundle')
         );
 
         // Locators
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Locator\EnvironmentlessFilesLocator::class,
+        self::assertInstanceOf(
+            EnvironmentlessFilesLocator::class,
             $container->get('hautelook_alice.locator.environmentless')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Locator\EnvDirectoryLocator::class,
+        self::assertInstanceOf(
+            EnvDirectoryLocator::class,
             $container->get('hautelook_alice.locator.env_directory')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\FixtureLocatorInterface::class,
+        self::assertInstanceOf(
+            FixtureLocatorInterface::class,
             $container->get('hautelook_alice.locator')
         );
 
         // Loader
-        $this->assertInstanceOf(
-            \Fidry\AliceDataFixtures\Loader\FileResolverLoader::class,
+        self::assertInstanceOf(
+            FileResolverLoader::class,
             $container->get('hautelook_alice.data_fixtures.loader.file_resolver_loader')
         );
 
-        $this->assertInstanceOf(
-            \Fidry\AliceDataFixtures\LoaderInterface::class,
+        self::assertInstanceOf(
+            LoaderInterface::class,
             $container->get('hautelook_alice.data_fixtures.purge_loader')
         );
 
-        $this->assertInstanceOf(
-            \Fidry\AliceDataFixtures\LoaderInterface::class,
+        self::assertInstanceOf(
+            LoaderInterface::class,
             $container->get('hautelook_alice.data_fixtures.append_loader')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Loader\DoctrineOrmLoader::class,
+        self::assertInstanceOf(
+            DoctrineOrmLoader::class,
             $container->get('hautelook_alice.loader.doctrine_orm_loader')
         );
 
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\LoaderInterface::class,
+        self::assertInstanceOf(
+            HautelookLoaderInterface::class,
             $container->get('hautelook_alice.loader')
         );
 
         // Commands
-        $this->assertInstanceOf(
-            \Hautelook\AliceBundle\Console\Command\Doctrine\DoctrineOrmLoadDataFixturesCommand::class,
+        self::assertInstanceOf(
+            DoctrineOrmLoadDataFixturesCommand::class,
             $container->get('hautelook_alice.console.command.doctrine.doctrine_orm_load_data_fixtures_command')
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function getKernelClass(): string
     {
         return AppKernel::class;

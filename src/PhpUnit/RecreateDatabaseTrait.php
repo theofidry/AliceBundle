@@ -38,7 +38,7 @@ trait RecreateDatabaseTrait
 
     protected static function buildSchema(): void
     {
-        $container = static::$container ?? static::$kernel->getContainer();
+        $container = static::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager(static::$manager);
         $meta = $em->getMetadataFactory()->getAllMetadata();
 

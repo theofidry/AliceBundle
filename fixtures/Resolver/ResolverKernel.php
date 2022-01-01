@@ -16,14 +16,8 @@ namespace Hautelook\AliceBundle\Resolver;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-/**
- * @author Théo FIDRY <theo.fidry@gmail.com>
- */
 class ResolverKernel extends Kernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         return [
@@ -32,10 +26,7 @@ class ResolverKernel extends Kernel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         // Do nothing.
     }

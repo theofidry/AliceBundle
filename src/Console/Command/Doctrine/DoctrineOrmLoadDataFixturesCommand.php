@@ -15,8 +15,10 @@ namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
 use Doctrine\Persistence\ManagerRegistry;
 use DomainException;
+use const E_USER_DEPRECATED;
 use Hautelook\AliceBundle\LoaderInterface as AliceBundleLoaderInterface;
-use RuntimeException;
+use InvalidArgumentException;
+use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkBundleConsoleApplication;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Command\Command;
@@ -25,39 +27,30 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use function trigger_error;
 
 /**
  * Command used to load the fixtures.
  */
 class DoctrineOrmLoadDataFixturesCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'hautelook:fixtures:load';
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
+    private ManagerRegistry $doctrine;
+    private AliceBundleLoaderInterface $loader;
 
-    /**
-     * @var AliceBundleLoaderInterface
-     */
-    private $loader;
-
-    public function __construct(string $name, ManagerRegistry $managerRegistry, AliceBundleLoaderInterface $loader)
-    {
+    public function __construct(
+        string $name,
+        ManagerRegistry $managerRegistry,
+        AliceBundleLoaderInterface $loader
+    ) {
         parent::__construct($name);
 
         $this->doctrine = $managerRegistry;
         $this->loader = $loader;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setAliases([self::$defaultName])
@@ -102,49 +95,44 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setApplication(ConsoleApplication $application = null)
+    public function setApplication(ConsoleApplication $application = null): void
     {
-        if (null !== $application && false === $application instanceof FrameworkBundleConsoleApplication) {
-            throw new \InvalidArgumentException(
+        if (null !== $application
+            && !($application instanceof FrameworkBundleConsoleApplication)
+        ) {
+            throw new InvalidArgumentException(
                 sprintf(
                     'Expected application to be an instance of "%s".',
-                    FrameworkBundleConsoleApplication::class
-                )
+                    FrameworkBundleConsoleApplication::class,
+                ),
             );
         }
 
         parent::setApplication($application);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws RuntimeException Unsupported Application type
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Warn the user that the database will be purged
         // Ask him to confirm his choice
-        if ($input->isInteractive() && !$input->getOption('append')) {
-            if (false === $this->askConfirmation(
+        if (
+            $input->isInteractive()
+            && !$input->getOption('append')
+            && !$this->askConfirmation(
                 $input,
                 $output,
                 '<question>Careful, database will be purged. Do you want to continue y/N ?</question>',
                 false
             )
-            ) {
-                return 0;
-            }
+        ) {
+            return self::SUCCESS;
         }
 
         $noBundles = $input->getOption('no-bundles') ?? false;
         if (!$noBundles) {
             @trigger_error(
                 'The configuration parameter hautelook_alice.root_dirs should be used to specify the directories to include. If done or if you do not need to load bundle\'s fixtures, use the --no-bundles option',
-                \E_USER_DEPRECATED
+                E_USER_DEPRECATED
             );
         }
 
@@ -152,7 +140,7 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
         if ($bundles) {
             @trigger_error(
                 'The option --bundle is deprecated. Use the configuration parameter hautelook_alice.root_dirs to include the desired directories instead',
-                \E_USER_DEPRECATED
+                E_USER_DEPRECATED
             );
         }
 
@@ -176,13 +164,15 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
     /**
      * Prompts to the user a message to ask him a confirmation.
      *
-     * @param string $question
-     * @param bool   $default
      *
      * @return bool User choice
      */
-    private function askConfirmation(InputInterface $input, OutputInterface $output, $question, $default)
-    {
+    private function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output,
+        string $question,
+        bool $default
+    ): bool {
         /** @var QuestionHelper $questionHelper */
         $questionHelper = $this->getHelperSet()->get('question');
         $question = new ConfirmationQuestion($question, $default);

@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
-use Doctrine\DBAL\Sharding\PoolingShardConnection;
+use function array_diff;
+use function array_merge;
+use function array_shift;
 use Doctrine\ORM\EntityManagerInterface;
-use Hautelook\AliceBundle\Functional\AppKernel;
+use Doctrine\Shards\DBAL\PoolingShardConnection;
+use function explode;
+use function getcwd;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Brand;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Product;
 use Hautelook\AliceBundle\Functional\TestKernel;
 use PHPUnit\Framework\TestCase;
+use function preg_replace;
+use function str_replace;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\HttpKernel\KernelInterface;
+use function trim;
 
 /**
  * @coversNothing
@@ -30,29 +38,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class LoadDataFixturesCommandIntegrationTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
+    private Application $application;
 
-    /**
-     * @var AppKernel
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
-    /**
-     * @var DoctrineOrmLoadDataFixturesCommand
-     */
-    private $command;
+    private DoctrineOrmLoadDataFixturesCommand $command;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $defaultEntityManager;
+    private EntityManagerInterface $defaultEntityManager;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->kernel = new TestKernel('LoadDataFixturesCommandIntegrationTest', true);
@@ -87,15 +80,12 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         $this->kernel->shutdown();
     }
 
-    public function testFixturesLoading()
+    public function testFixturesLoading(): void
     {
         $command = $this->application->find('hautelook:fixtures:load');
         $commandTester = new CommandTester($command);
@@ -113,7 +103,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->verifyBrands(10);
     }
 
-    public function testAppendFixtures()
+    public function testAppendFixtures(): void
     {
         $command = $this->application->find('hautelook:fixtures:load');
         $commandTester = new CommandTester($command);
@@ -144,7 +134,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
     /**
      * @dataProvider loadCommandProvider
      */
-    public function testFixturesRegisteringUsingInvalidManager(array $inputs, string $expected)
+    public function testFixturesRegisteringUsingInvalidManager(array $inputs, string $expected): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Doctrine (fixtures|ORM) Manager named "foo" does not exist\.$/');
@@ -162,7 +152,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
             ['interactive' => false]
         );
 
-        $this->assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
+        self::assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
     }
 
     /**
@@ -183,10 +173,10 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
             ['interactive' => false]
         );
 
-        $this->assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
+        self::assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
     }
 
-    public function loadCommandProvider()
+    public static function loadCommandProvider(): iterable
     {
         $data = [];
 
@@ -194,10 +184,10 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
             [],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -209,11 +199,11 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yaml
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -225,11 +215,11 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Prod/prod.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Prod/prod.yaml
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -242,10 +232,10 @@ EOF
             <<<'EOF'
               > fixtures found:
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Prod/prod.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Prod/prod.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -260,9 +250,9 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -293,9 +283,9 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Dev/dev.yaml
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
   > purging database
   > fixtures loaded
@@ -312,7 +302,7 @@ EOF
             <<<'EOF'
               > fixtures found:
       - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/ABundle/Resources/fixtures/aentity.php
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Bundle/BBundle/Resources/fixtures/bentity.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -327,8 +317,8 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -343,9 +333,9 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Ignored2/notIgnored.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Ignored2/notIgnored.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -360,9 +350,9 @@ EOF
             ],
             <<<'EOF'
               > fixtures found:
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yml
-      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Provider/testFormatter.yml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/brand.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/product.yaml
+      - /home/travis/build/theofidry/AliceBundle/tests/Functional/TestBundle/Resources/fixtures/Provider/testFormatter.yaml
   > purging database
   > fixtures loaded
 EOF
@@ -370,29 +360,28 @@ EOF
 
         // Fix paths
         foreach ($data as $index => $dataSet) {
-            $data[$index][1] = str_replace('/home/travis/build/theofidry/AliceBundle', getcwd(), $dataSet[1]);
+            $data[$index][1] = str_replace(
+                '/home/travis/build/theofidry/AliceBundle',
+                getcwd(),
+                $dataSet[1],
+            );
         }
 
         return $data;
     }
 
-    /**
-     * @param string $expected
-     * @param string $display
-     */
-    protected function assertFixturesDisplayEquals($expected, $display)
+    protected static function assertFixturesDisplayEquals(string $expected, string $display): void
     {
-        $expected = $this->normalizeFixturesDisplay($expected);
-        $display = $this->normalizeFixturesDisplay($display);
-        $this->assertCount(0, array_diff($expected, $display));
+        $expected = self::normalizeFixturesDisplay($expected);
+        $display = self::normalizeFixturesDisplay($display);
+
+        self::assertCount(0, array_diff($expected, $display));
     }
 
     /**
-     * @param string $display
-     *
      * @return string[]
      */
-    private function normalizeFixturesDisplay($display)
+    private static function normalizeFixturesDisplay(string $display): array
     {
         $display = trim($display, ' ');
         $display = trim($display, "\t");
@@ -412,9 +401,9 @@ EOF
         return $this->application->run(new ArrayInput($options));
     }
 
-    private function verifyProducts(int $count)
+    private function verifyProducts(int $count): void
     {
-        $this->assertCount(
+        self::assertCount(
             $count,
             $this->defaultEntityManager->getRepository(Product::class)->findAll()
         );
@@ -422,19 +411,19 @@ EOF
         for ($i = 1; $i <= $count; ++$i) {
             /* @var Product|null $product */
             $product = $this->defaultEntityManager->find(Product::class, $i);
-            $this->assertNotNull($product);
-            $this->assertStringStartsWith('Awesome Product', $product->getDescription());
+            self::assertNotNull($product);
+            self::assertStringStartsWith('Awesome Product', $product->getDescription());
             // Make sure every product has a brand
-            $this->assertInstanceOf(
+            self::assertInstanceOf(
                 Brand::class,
                 $product->getBrand()
             );
         }
     }
 
-    private function verifyBrands(int $count)
+    private function verifyBrands(int $count): void
     {
-        $this->assertCount(
+        self::assertCount(
             $count,
             $this->defaultEntityManager->getRepository(Brand::class)->findAll()
         );
@@ -442,7 +431,7 @@ EOF
         for ($i = 1; $i <= $count; ++$i) {
             /* @var Brand|null $brand */
             $brand = $this->defaultEntityManager->find(Brand::class, $i);
-            $this->assertNotNull($brand);
+            self::assertNotNull($brand);
         }
     }
 }

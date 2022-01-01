@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Alice\Generator\Instantiator\Chainable;
 
+use function get_class;
+use LogicException;
 use Nelmio\Alice\Definition\MethodCall\MethodCallWithReference;
 use Nelmio\Alice\Definition\Object\SimpleObject;
 use Nelmio\Alice\Definition\ServiceReference\InstantiatedReference;
@@ -22,6 +24,7 @@ use Nelmio\Alice\Generator\Instantiator\ChainableInstantiatorInterface;
 use Nelmio\Alice\Generator\ResolvedFixtureSet;
 use Nelmio\Alice\IsAServiceTrait;
 use Nelmio\Alice\Throwable\Exception\Generator\Instantiator\InstantiationException;
+use function sprintf;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,19 +32,13 @@ final class InstantiatedReferenceInstantiator implements ChainableInstantiatorIn
 {
     use IsAServiceTrait;
 
-    private $container;
+    private ?ContainerInterface $container = null;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canInstantiate(FixtureInterface $fixture): bool
     {
         $constructor = $fixture->getSpecs()->getConstructor();
@@ -53,9 +50,6 @@ final class InstantiatedReferenceInstantiator implements ChainableInstantiatorIn
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function instantiate(
         FixtureInterface $fixture,
         ResolvedFixtureSet $fixtureSet,
@@ -67,23 +61,32 @@ final class InstantiatedReferenceInstantiator implements ChainableInstantiatorIn
         return $this->generateSet($fixture, $fixtureSet, $instance);
     }
 
-    private function checkContainer(string $method)
+    private function checkContainer(string $method): void
     {
         if (null === $this->container) {
-            throw new \LogicException(
+            throw new LogicException(
                 sprintf(
-                    'Expected instantiator method "%s" to be used only if it has a container, but no container could'
-                    .' be found.',
-                    $method
-                )
+                    'Expected instantiator method "%s" to be used only if it has a container, but no container could be found.',
+                    $method,
+                ),
             );
         }
     }
 
-    private function createInstance(FixtureInterface $fixture)
+    private function createInstance(FixtureInterface $fixture): object
     {
         $constructor = $fixture->getSpecs()->getConstructor();
-        list($class, $factoryReference, $method, $arguments) = [
+
+        if (null === $constructor) {
+            throw new InstantiationException(
+                sprintf(
+                    'Expected fixture "%s" to have a constructor.',
+                    $fixture->getId(),
+                ),
+            );
+        }
+
+        [$class, $factoryReference, $method, $arguments] = [
             $fixture->getClassName(),
             $constructor->getCaller()->getId(),
             $constructor->getMethod(),
@@ -97,12 +100,13 @@ final class InstantiatedReferenceInstantiator implements ChainableInstantiatorIn
         $factory = $this->container->get($factoryReference);
 
         $instance = $factory->$method(...$arguments);
-        if (false === $instance instanceof $class) {
+
+        if (!($instance instanceof $class)) {
             throw new InstantiationException(
                 sprintf(
                     'Instantiated fixture was expected to be an instance of "%s". Got "%s" instead.',
                     $class,
-                    \get_class($instance)
+                    get_class($instance)
                 )
             );
         }

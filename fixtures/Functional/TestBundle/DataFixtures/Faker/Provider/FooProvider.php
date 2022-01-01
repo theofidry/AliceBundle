@@ -15,7 +15,7 @@ namespace Hautelook\AliceBundle\Functional\TestBundle\DataFixtures\Faker\Provide
 
 class FooProvider
 {
-    public static function foo($str)
+    public static function foo(string $str): string
     {
         return 'foo'.$str;
     }
