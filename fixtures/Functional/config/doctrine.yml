@@ -5,6 +5,7 @@ doctrine:
             default:
                 driver: pdo_mysql
                 dbname: hautelook_alice_bundle
+                port: 3307
                 user: root
                 password: password
     orm:

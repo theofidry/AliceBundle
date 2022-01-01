@@ -1,0 +1,17 @@
+version: '3.1'
+
+# To keep in sync with .gitHub/workflows/tests.yaml
+services:
+    mysql:
+        image: mysql:8.0
+        platform: linux/amd64
+        ports:
+            - 3307:3306
+        environment:
+            # To keep in sync with fixtures/Functional/config/doctrine.yml and .github/workflows/ci.yaml
+            MYSQL_DATABASE: hautelook_alice_bundle
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: password
+        # Store data in memory to improve speed
+        tmpfs:
+            - /var/lib/mysql
