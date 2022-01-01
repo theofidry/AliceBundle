@@ -19,7 +19,6 @@ use Hautelook\AliceBundle\HautelookAliceBundle;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -64,22 +63,9 @@ class AppKernel extends Kernel
             return;
         }
 
-        $container->addCompilerPass(new class() implements CompilerPassInterface {
-            public function process(ContainerBuilder $container)
-            {
-                foreach ($container->getDefinitions() as $id => $definition) {
-                    if ('slugger' === $id) {
-                        continue;
-                    }
-                    $definition->setPublic(true);
-                }
-                foreach ($container->getAliases() as $id => $definition) {
-                    if ('Symfony\Component\String\Slugger\SluggerInterface' === $id) {
-                        continue;
-                    }
-                    $definition->setPublic(true);
-                }
-            }
-        }, PassConfig::TYPE_OPTIMIZE);
+        $container->addCompilerPass(
+            new MakeServicesPublicCompilerPass(),
+            PassConfig::TYPE_OPTIMIZE,
+        );
     }
 }

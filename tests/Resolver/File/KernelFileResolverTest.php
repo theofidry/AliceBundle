@@ -17,8 +17,8 @@ use Fidry\AliceDataFixtures\FileResolverInterface;
 use Hautelook\AliceBundle\Functional\SimpleKernel;
 use Hautelook\AliceBundle\HttpKernel\DummyKernel;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionClass;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -26,6 +26,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class KernelFileResolverTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var KernelInterface|null
      */
@@ -87,50 +89,6 @@ class KernelFileResolverTest extends TestCase
 
         $resolver = new KernelFileResolver(new DummyKernel());
         $resolver->resolve([__DIR__]);
-    }
-
-    public function testResolveFileWithTheKernelIfPossible()
-    {
-        if (Kernel::VERSION_ID >= 50000) {
-            $this->markTestSkipped('Symfony 5 dropped the $first parameter in the locateResource method. This method can no longer return an array');
-        }
-
-        $files = [
-            '@SimpleBundle/files/foo.yml',
-            __FILE__,
-        ];
-
-        $this->kernel = new SimpleKernel('SimpleKernel_test', true);
-        $this->kernel->boot();
-
-        $expected = [
-            realpath(__DIR__.'/../../../fixtures/Functional/SimpleBundle/files/foo.yml'),
-            __FILE__,
-        ];
-
-        $resolver = new KernelFileResolver($this->kernel);
-        $actual = $resolver->resolve($files);
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testThrowsAnErrorIfTheFileResolvedByTheKernelIsNotAString()
-    {
-        if (Kernel::VERSION_ID >= 50000) {
-            $this->markTestSkipped('Symfony 5 dropped the $first parameter in the locateResource method. This method can no longer return an array');
-        }
-        $this->expectException(\TypeError::class);
-
-        $files = [
-            '@SimpleBundle/files/foo.yml',
-        ];
-
-        $this->kernel = new SimpleKernel('SimpleKernel_test', true);
-        $this->kernel->setLocateResourceFirst(false);
-        $this->kernel->boot();
-
-        $resolver = new KernelFileResolver($this->kernel);
-        $resolver->resolve($files);
     }
 
     public function testThrowsAnExceptionIfFileResolvedByTheKernelDoesNotExist()

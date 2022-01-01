@@ -23,11 +23,6 @@ use Symfony\Component\HttpKernel\Kernel;
 class SimpleKernel extends Kernel
 {
     /**
-     * @var bool|null
-     */
-    private $overrideFirst;
-
-    /**
      * {@inheritdoc}
      */
     public function registerBundles(): iterable
@@ -37,31 +32,8 @@ class SimpleKernel extends Kernel
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-    }
-
-    public function setLocateResourceFirst(bool $overrideFirst = null)
-    {
-        $this->overrideFirst = $overrideFirst;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function locateResource($name, $dir = null, $first = true): string
-    {
-        if (null !== $this->overrideFirst) {
-            $first = $this->overrideFirst;
-        }
-
-        if (Kernel::VERSION_ID >= 50000) {
-            return parent::locateResource($name);
-        }
-
-        return parent::locateResource($name, $dir, $first);
+        // Nothing to do
     }
 }

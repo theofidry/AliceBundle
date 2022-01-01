@@ -71,7 +71,7 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
             ->addOption(
                 'no-bundles',
                 null,
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_NONE,
                 'Fixtures from bundles will not be loaded.'
             )
             ->addOption(
@@ -140,7 +140,7 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
             }
         }
 
-        $noBundles = $input->getOption('no-bundles') ?? true;
+        $noBundles = $input->getOption('no-bundles') ?? false;
         if (!$noBundles) {
             @trigger_error(
                 'The configuration parameter hautelook_alice.root_dirs should be used to specify the directories to include. If done or if you do not need to load bundle\'s fixtures, use the --no-bundles option',

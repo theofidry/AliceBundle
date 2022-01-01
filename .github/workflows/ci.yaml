@@ -5,7 +5,9 @@ on:
     push:
         branches: [ master ]
 
+# this fixes the input device is not a TTY .. see https://github.com/docker/compose/issues/5696
 env:
+    MYSQL_HOST: '127.0.0.1'
     SHELL_VERBOSITY: 1
 
 jobs:
@@ -36,7 +38,7 @@ jobs:
                 run: php-cs-fixer fix --dry-run --diff --ansi
 
     phpunit:
-        name: PHPUnit (PHP ${{ matrix.php }})
+        name: PHPUnit (PHP ${{ matrix.php }}) ${{ matrix.variant }}
         runs-on: ubuntu-latest
         strategy:
             matrix:
