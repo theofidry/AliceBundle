@@ -36,7 +36,7 @@ jobs:
                 run: php-cs-fixer fix --dry-run --diff --ansi
 
     phpunit:
-        name: PHPUnit (PHP ${{ matrix.php }})
+        name: PHPUnit (PHP ${{ matrix.php }}) ${{ matrix.variant }}
         runs-on: ubuntu-latest
         strategy:
             matrix:
