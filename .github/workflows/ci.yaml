@@ -87,7 +87,7 @@ jobs:
 
             -   name: Wait for MySQL
                 run: |
-                    while ! mysqladmin ping --host=$MYSQL_HOST --user=root --password=$MYSQL_ROOT_PASSWORD; do
+                    while ! mysqladmin ping --host=$MYSQL_HOST --user=root --password=$MYSQL_ROOT_PASSWORD --port=3307; do
                         sleep 1
                     done
 
