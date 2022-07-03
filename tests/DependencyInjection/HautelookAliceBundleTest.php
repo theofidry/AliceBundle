@@ -41,16 +41,21 @@ class HautelookAliceBundleTest extends KernelTestCase
 {
     protected function tearDown(): void
     {
-        parent::tearDown();
-        static::$class = null;
+        try {
+            parent::tearDown();
+        } catch (LogicException $exception) {
+            // Do nothing: this will happen in the event the kernel is not
+            // booteable which is the case in some tests here.
+        }
     }
 
     public function testCannotBootIfFidryAliceDataFixturesBundleIsNotRegistered(): void
     {
+        self::$kernel = new ConfigurableKernel('ConfigurableKernel0', true);
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('To register "Hautelook\AliceBundle\HautelookAliceBundle", you also need: "Doctrine\Bundle\DoctrineBundle\DoctrineBundle", "Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle".');
 
-        self::$kernel = new ConfigurableKernel('ConfigurableKernel0', true);
         self::$kernel->boot();
     }
 
