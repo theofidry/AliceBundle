@@ -35,7 +35,7 @@
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/data-fixtures": "^1.5",
         "doctrine/orm": "^2.10.0",
-        "doctrine/persistence": "^2.2",
+        "doctrine/persistence": "^2.2 || ^3.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "symfony/finder": "^5.4.2 || ^6.0",
         "symfony/framework-bundle": "^5.4.2 || ^6.0",
