@@ -85,8 +85,11 @@ jobs:
                     dependency-versions: ${{ matrix.dependencies }}
                     composer-options: "--prefer-dist"
 
-            -   name: Ping MySQL
-                run: mysql mysql://root:password@127.0.0.1:3307/hautelook_alice_bundle?serverVersion=8.0 -e "SELECT 1"
+            -   name: Wait for MySQL
+                run: |
+                    while ! mysqladmin ping --host=$MYSQL_HOST --password=$MYSQL_ROOT_PASSWORD --silent; do
+                        sleep 1
+                    done
 
             -   name: Run tests
                 run: vendor/bin/phpunit --verbose --stop-on-failure
