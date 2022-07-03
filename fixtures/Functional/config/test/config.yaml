@@ -6,6 +6,7 @@ framework:
     test: ~
     annotations:
         cache: file
+    http_method_override: false
 
 services:
     _defaults:
