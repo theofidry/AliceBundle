@@ -43,19 +43,14 @@ jobs:
         strategy:
             matrix:
                 php:
-                    - '7.4'
-                    - '8.0'
                     - '8.1'
                 variant: ['normal']
                 dependencies: ['highest']
                 include:
-                    -   php: '7.4'
+                    -   php: '8.1'
                         variant: 'symfony/symfony:"^5.4"'
                         dependencies: 'highest'
                         composer-flags: ''
-                    -   php: '7.4'
-                        variant: 'symfony/symfony:"^5.4"'
-                        dependencies: 'lowest'
             fail-fast: false
 
         services:
@@ -89,6 +84,12 @@ jobs:
                 with:
                     dependency-versions: ${{ matrix.dependencies }}
                     composer-options: "--prefer-dist"
+
+            -   name: Wait for MySQL
+                run: |
+                    while ! mysqladmin ping --host=$MYSQL_HOST --user=root --password=$MYSQL_ROOT_PASSWORD --port=3307; do
+                        sleep 1
+                    done
 
             -   name: Run tests
                 run: vendor/bin/phpunit --verbose --stop-on-failure

@@ -4,6 +4,7 @@ parameters:
 framework:
     secret: test
     test: ~
+    http_method_override: false
 
 services:
     _defaults:

@@ -21,6 +21,7 @@ use InvalidArgumentException;
 use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkBundleConsoleApplication;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,10 +33,9 @@ use function trigger_error;
 /**
  * Command used to load the fixtures.
  */
+#[AsCommand(name: 'hautelook:fixtures:load', description: 'Load data fixtures to your database.')]
 class DoctrineOrmLoadDataFixturesCommand extends Command
 {
-    protected static $defaultName = 'hautelook:fixtures:load';
-
     private ManagerRegistry $doctrine;
     private AliceBundleLoaderInterface $loader;
 
@@ -53,7 +53,6 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setAliases([self::$defaultName])
             ->setDescription('Load data fixtures to your database.')
             ->addOption(
                 'bundle',
