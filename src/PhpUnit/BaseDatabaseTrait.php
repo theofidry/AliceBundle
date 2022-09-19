@@ -66,14 +66,16 @@ trait BaseDatabaseTrait
     protected static function populateDatabase(): void
     {
         $container = static::$kernel->getContainer();
+        $manager = $container->get('doctrine')->getManager(static::$manager);
         static::$fixtures = $container->get('hautelook_alice.loader')->load(
             new Application(static::$kernel), // OK this is ugly... But there is no other way without redesigning LoaderInterface from the ground.
-            $container->get('doctrine')->getManager(static::$manager),
+            $manager,
             static::$bundles,
             static::$kernel->getEnvironment(),
             static::$append,
             static::$purgeWithTruncate,
             static::$shard
         );
+        $manager->clear();
     }
 }
