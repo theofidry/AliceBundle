@@ -239,7 +239,7 @@ Done.
 ## Validation
 
 By default, fixtures are not validated. If you want to trigger the validation you
-can do it with a processor:
+can do it with [a custom processor](alice-processors.md):
 
 ```php
 <?php declare(strict_types=1);
