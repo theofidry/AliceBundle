@@ -60,6 +60,7 @@ A lot of that complexity has been pushed back to nelmio/alice 3.x which has a mu
     1. [Load fixtures in a specific order](doc/advanced-usage.md#load-fixtures-in-a-specific-order)
         1. [Load fixtures in a specific order](doc/advanced-usage.md#ordering-the-files-found)
         1. [Persisting the classes in a specific order](doc/advanced-usage.md#persisting-the-classes-in-a-specific-order)
+   1. [Validation](doc/advanced-usage.md#validation)
 1. [Custom Faker Providers](doc/faker-providers.md)
 1. [Custom Alice Processors](doc/alice-processors.md)
 1. [Resources](#resources)
