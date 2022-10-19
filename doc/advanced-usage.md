@@ -246,6 +246,7 @@ can do it with [a custom processor](alice-processors.md):
 
 namespace App\DataFixtures\Processor;
 
+use DomainException;
 use Fidry\AliceDataFixtures\ProcessorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -263,7 +264,7 @@ final class ArticleProcessor implements ProcessorInterface
         $violations = $this->validator->validate($object);
         if ($violations->count() > 0) {
             $message = sprintf("Error when validating fixture %s, violation(s) detected:\n%s", $id, $violations);
-            throw new \DomainException($message);
+            throw new DomainException($message);
         }
     }
 
