@@ -242,9 +242,7 @@ By default, fixtures are not validated. If you want to trigger the validation yo
 can do it with a processor:
 
 ```php
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\DataFixtures\Processor;
 
