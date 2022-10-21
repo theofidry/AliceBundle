@@ -145,9 +145,9 @@ final class CustomOrderFilesLocator implements FixtureLocatorInterface
     public function locateFiles(array $bundles, string $environment): array
     {
         $files = $this->decoratedFixtureLocator->locateFiles($bundles, $environment);
-        
+
         // TODO: order the files found in whatever order you want
-        
+
         // Warning: the order will only affect how the fixture definitions are merged. Indeed the order in which they
         // are instantiated afterwards by nelmio/alice may change due to handling the fixture dependencies and
         // circular references.
@@ -234,6 +234,47 @@ services:
 ```
 
 Done.
+
+
+## Validation
+
+By default, fixtures are not validated. If you want to trigger the validation you
+can do it with [a custom processor](alice-processors.md):
+
+```php
+<?php declare(strict_types=1);
+
+namespace App\DataFixtures\Processor;
+
+use DomainException;
+use Fidry\AliceDataFixtures\ProcessorInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+final class ArticleProcessor implements ProcessorInterface
+{
+    public function __construct(
+        private readonly ValidatorInterface $validator
+    ) {
+    }
+
+    public function preProcess(string $id, object $object): void
+    {
+        /** @var ConstraintViolationList $violations */
+        $violations = $this->validator->validate($object);
+        if ($violations->count() > 0) {
+            $message = sprintf("Error when validating fixture %s, violation(s) detected:\n%s", $id, $violations);
+            throw new DomainException($message);
+        }
+    }
+
+    public function postProcess(string $id, object $object): void
+    {
+    }
+}
+```
+
+You can find more explanations in this [blog post](https://www.strangebuzz.com/en/blog/validating-your-data-fixtures-with-the-alice-symfony-bundle).
 
 
 Previous chapter: [Basic usage](../README.md#basic-usage)<br />
