@@ -32,6 +32,7 @@ use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * @covers \Hautelook\AliceBundle\Console\Command\Doctrine\DoctrineOrmLoadDataFixturesCommand
+ *
  * @group legacy
  */
 class LoadDataFixturesCommandTest extends TestCase
