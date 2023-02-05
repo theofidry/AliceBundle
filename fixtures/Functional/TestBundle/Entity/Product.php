@@ -15,39 +15,25 @@ namespace Hautelook\AliceBundle\Functional\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Product
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     protected $name;
 
-    /**
-     * @ORM\Column(type="decimal", scale=2)
-     */
+    #[ORM\Column(type: 'decimal', scale: 2)]
     protected $price;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     protected $description;
 
-    /**
-     * @var Brand
-     *
-     * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
-     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Brand', inversedBy: 'products')]
+    #[ORM\JoinColumn(name: 'brand_id', referencedColumnName: 'id')]
     protected $brand;
 
     public function getBrand(): Brand

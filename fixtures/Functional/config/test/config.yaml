@@ -4,8 +4,6 @@ parameters:
 framework:
     secret: test
     test: ~
-    annotations:
-        cache: file
     http_method_override: false
 
 services:

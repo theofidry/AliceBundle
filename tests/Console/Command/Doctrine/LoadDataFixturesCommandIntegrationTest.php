@@ -34,6 +34,7 @@ use function trim;
 
 /**
  * @coversNothing
+ *
  * @group legacy
  */
 class LoadDataFixturesCommandIntegrationTest extends TestCase

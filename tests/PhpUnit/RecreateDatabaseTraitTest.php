@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @author Gary PEGEOT <garypegeot@gmail.com>
+ *
  * @coversNothing
  */
 class RecreateDatabaseTraitTest extends KernelTestCase
