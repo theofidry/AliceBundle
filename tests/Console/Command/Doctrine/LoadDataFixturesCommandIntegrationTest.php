@@ -63,7 +63,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->runConsole('doctrine:database:create', ['--if-not-exists' => true, '--connection' => 'default']);
         $this->runConsole(
             'doctrine:database:create',
-            ['--if-not-exists' => true, '--connection' => 'default']
+            ['--if-not-exists' => true, '--connection' => 'default', '--shard' => 1]
         );
 
         // Reset fixtures schemas
