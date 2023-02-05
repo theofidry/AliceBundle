@@ -15,24 +15,15 @@ namespace Hautelook\AliceBundle\Functional\TestBundle\Bundle\ABundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Aentity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @return int|null
-     */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
