@@ -80,12 +80,6 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
                 'Append the data fixtures instead of deleting all data from the database first.'
             )
             ->addOption(
-                'shard',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The shard database id to use for this command.'
-            )
-            ->addOption(
                 'purge-with-truncate',
                 null,
                 InputOption::VALUE_NONE,
@@ -149,13 +143,12 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
 
         $manager = $this->doctrine->getManager($input->getOption('manager'));
         $environment = $input->getOption('env');
-        $shard = $input->getOption('shard');
         $append = $input->getOption('append');
         $truncate = $input->getOption('purge-with-truncate');
         /** @var FrameworkBundleConsoleApplication $application */
         $application = $this->getApplication();
 
-        $this->loader->load($application, $manager, $bundles, $environment, $append, $truncate, $shard, $noBundles);
+        $this->loader->load($application, $manager, $bundles, $environment, $append, $truncate, $noBundles);
 
         return 0;
     }

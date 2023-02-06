@@ -17,7 +17,6 @@ use function array_diff;
 use function array_merge;
 use function array_shift;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Shards\DBAL\PoolingShardConnection;
 use function explode;
 use function getcwd;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Brand;
@@ -43,8 +42,6 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
 
     private KernelInterface $kernel;
 
-    private DoctrineOrmLoadDataFixturesCommand $command;
-
     private EntityManagerInterface $defaultEntityManager;
 
     protected function setUp(): void
@@ -54,8 +51,6 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->application = new Application($this->kernel);
         $this->application->setAutoExit(false);
 
-        $this->command = $this->kernel->getContainer()->get('hautelook_alice.console.command.doctrine.doctrine_orm_load_data_fixtures_command');
-
         $doctrine = $this->kernel->getContainer()->get('doctrine');
         $this->defaultEntityManager = $doctrine->getManager();
 
@@ -63,21 +58,13 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->runConsole('doctrine:database:create', ['--if-not-exists' => true, '--connection' => 'default']);
         $this->runConsole(
             'doctrine:database:create',
-            ['--if-not-exists' => true, '--connection' => 'default', '--shard' => 1]
+            ['--if-not-exists' => true, '--connection' => 'default']
         );
 
         // Reset fixtures schemas
-        foreach ($doctrine->getManagers() as $name => $manager) {
+        foreach (array_keys($doctrine->getManagers()) as $name) {
             $this->runConsole('doctrine:schema:drop', ['--force' => true, '--em' => $name]);
             $this->runConsole('doctrine:schema:create', ['--em' => $name]);
-            $connection = $manager->getConnection();
-
-            if ($connection instanceof PoolingShardConnection) {
-                $connection->connect(1);
-                $this->runConsole('doctrine:schema:drop', ['--force' => true, '--em' => $name]);
-                $this->runConsole('doctrine:schema:create', ['--em' => $name]);
-                $connection->connect(0);
-            }
         }
     }
 

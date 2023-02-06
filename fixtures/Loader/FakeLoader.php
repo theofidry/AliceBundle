@@ -30,7 +30,6 @@ class FakeLoader implements LoaderInterface
         string $environment,
         bool $append,
         bool $purgeWithTruncate,
-        string $shard = null,
         bool $noBundles = false
     ): array {
         $this->__call(__METHOD__, func_get_args());

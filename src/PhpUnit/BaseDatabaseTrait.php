@@ -42,11 +42,6 @@ trait BaseDatabaseTrait
     protected static bool $purgeWithTruncate = true;
 
     /**
-     * @var string|null The name of the Doctrine shard to use
-     */
-    protected static ?string $shard = null;
-
-    /**
      * @var string|null The name of the Doctrine connection to use
      */
     protected static ?string $connection = null;
@@ -73,7 +68,6 @@ trait BaseDatabaseTrait
             static::$kernel->getEnvironment(),
             static::$append,
             static::$purgeWithTruncate,
-            static::$shard
         );
     }
 }

@@ -93,7 +93,7 @@ class LoadDataFixturesCommandTest extends TestCase
         /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
-            ->load($application, $manager, [], 'fake_env', false, false, null, false)
+            ->load($application, $manager, [], 'fake_env', false, false, false)
             ->shouldBeCalled()
         ;
         /** @var LoaderInterface $loader */
@@ -121,7 +121,6 @@ class LoadDataFixturesCommandTest extends TestCase
                 'ABundle',
                 'BBundle',
             ],
-            '--shard' => 'shard_id',
             '--append' => null,
             '--purge-with-truncate' => null,
         ]);
@@ -136,7 +135,7 @@ class LoadDataFixturesCommandTest extends TestCase
         /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
-            ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, 'shard_id', false)
+            ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, false)
             ->shouldBeCalled();
 
         /** @var LoaderInterface $loader */
@@ -164,7 +163,6 @@ class LoadDataFixturesCommandTest extends TestCase
                 'ABundle',
                 'BBundle',
             ],
-            '--shard' => 'shard_id',
             '--append' => null,
             '--purge-with-truncate' => null,
             '--no-bundles' => null,
@@ -180,7 +178,7 @@ class LoadDataFixturesCommandTest extends TestCase
         /** @var ObjectProphecy<LoaderInterface> $loaderProphecy */
         $loaderProphecy = $this->prophesize(LoaderInterface::class);
         $loaderProphecy
-            ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, 'shard_id', true)
+            ->load($application, $manager, ['ABundle', 'BBundle'], 'dummy_env', true, true, true)
             ->shouldBeCalledTimes(0);
 
         /** @var LoaderInterface $loader */
