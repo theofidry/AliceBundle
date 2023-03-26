@@ -83,7 +83,7 @@ final class EnvDirectoryLocator implements FixtureLocatorInterface
             return [];
         }
 
-        $files = SymfonyFinder::create()->files()->in($fullPaths)->depth(0)->name('/.*\.(ya?ml|php)$/i');
+        $files = SymfonyFinder::create()->files()->in($fullPaths)->depth(0)->name('/.*\.(ya?ml|php|json)$/i');
 
         // this sort helps to set an order with filename
         // ( "001-root-level-fixtures.yml", "002-another-level-fixtures.yml", ... )

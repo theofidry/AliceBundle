@@ -83,6 +83,7 @@ class EnvDirectoryLocatorTest extends TestCase
                 $prefix.'/file3.php',
                 $prefix.'/file5.YML',
                 $prefix.'/file6.YAML',
+                $prefix.'/file7.json',
             ],
         ];
 
@@ -100,6 +101,7 @@ class EnvDirectoryLocatorTest extends TestCase
                 $prefix.'/file3.php',
                 $prefix.'/file5.YML',
                 $prefix.'/file6.YAML',
+                $prefix.'/file7.json',
             ],
         ];
 
@@ -120,6 +122,7 @@ class EnvDirectoryLocatorTest extends TestCase
                 $prefix.'/file3.php',
                 $prefix.'/file5.YML',
                 $prefix.'/file6.YAML',
+                $prefix.'/file7.json',
             ],
         ];
 
@@ -182,10 +185,12 @@ class EnvDirectoryLocatorTest extends TestCase
                 $prefixA1.'file3.php',
                 $prefixA1.'file5.YML',
                 $prefixA1.'file6.YAML',
+                $prefixA1.'file7.json',
 
                 $prefixB.'file1.yml',
                 $prefixB.'file2.yaml',
                 $prefixB.'file3.php',
+                $prefixB.'file4.json',
             ],
         ];
     }
