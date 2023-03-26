@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Loader;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Shards\DBAL\PoolingShardConnection;
 use Fidry\AliceDataFixtures\Bridge\Doctrine\Persister\ObjectManagerPersister;
 use Fidry\AliceDataFixtures\LoaderInterface;
 use Fidry\AliceDataFixtures\Persistence\PersisterAwareInterface;
 use Fidry\AliceDataFixtures\Persistence\PersisterInterface;
 use Fidry\AliceDataFixtures\Persistence\PurgeMode;
-use function get_class;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\LoaderInterface as AliceBundleLoaderInterface;
@@ -96,7 +94,6 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         string $environment,
         bool $append,
         bool $purgeWithTruncate,
-        string $shard = null,
         bool $noBundles = false
     ): array {
         if ($append && $purgeWithTruncate) {
@@ -112,10 +109,6 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         $fixtureFiles = $this->fixtureLocator->locateFiles($bundles, $environment);
 
         $this->logger->info('fixtures found', ['files' => $fixtureFiles]);
-
-        if (null !== $shard) {
-            $this->connectToShardConnection($manager, $shard);
-        }
 
         $purgeMode = $this->retrievePurgeMode($append, $purgeWithTruncate);
 
@@ -155,27 +148,6 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         $loader = $loader->withPersister($persister);
 
         return $loader->load($files, $parameters, [], $purgeMode);
-    }
-
-    private function connectToShardConnection(EntityManagerInterface $manager, string $shard)
-    {
-        $connection = $manager->getConnection();
-
-        if ($connection instanceof PoolingShardConnection) {
-            $connection->connect($shard);
-
-            return;
-        }
-
-        throw new InvalidArgumentException(
-            sprintf(
-                'Could not establish a shard connection for the shard "%s". The connection must be an instance'
-                .' of "%s", got "%s" instead.',
-                $shard,
-                PoolingShardConnection::class,
-                get_class($connection)
-            )
-        );
     }
 
     private function retrievePurgeMode(bool $append, bool $purgeWithTruncate): ?PurgeMode

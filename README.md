@@ -229,7 +229,6 @@ Both traits provide several configuration options as protected static properties
 * `self::$bundles`: The list of bundles where to look for fixtures
 * `self::$append`: Append fixtures instead of purging
 * `self::$purgeWithTruncate`: Use TRUNCATE to purge
-* `self::$shard`: The name of the Doctrine shard to use
 * `self::$connection`: The name of the Doctrine connection to use
 
 Use them in the `setUpBeforeClass` method.

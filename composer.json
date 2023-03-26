@@ -45,8 +45,7 @@
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy": "^1.7",
         "symfony/phpunit-bridge": "^6.0",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "doctrine/shards": "^1.0"
+        "phpspec/prophecy-phpunit": "^2.0"
     },
 
     "extra": {

@@ -30,7 +30,6 @@ interface LoaderInterface
      * @param string[]               $bundles     Bundle names in which the fixtures can be found
      * @param string                 $environment If set filter the fixtures by the environment given
      * @param bool                   $append      If true, then the database is not purged before loading the objects
-     * @param string|null            $shard       Shard connection name to use
      * @param bool                   $noBundles   If true, then fixtures from other bundles will not be loaded
      *
      * @return object[] Loaded objects
@@ -42,7 +41,6 @@ interface LoaderInterface
         string $environment,
         bool $append,
         bool $purgeWithTruncate,
-        string $shard = null,
         bool $noBundles = false
     ): array;
 }
