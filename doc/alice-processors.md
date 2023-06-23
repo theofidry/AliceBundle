@@ -30,4 +30,4 @@ Previous chapter: [Custom Faker providers](faker-providers.md)<br />
 [Back to Table of Contents](../README.md#documentation)
 
 
-[alice-data-fixture-processors]: https://github.com/theofidry/AliceDataFixtures#processors
+[alice-data-fixture-processors]: https://github.com/theofidry/AliceDataFixtures/blob/master/doc/advanced-usage.md#processors
