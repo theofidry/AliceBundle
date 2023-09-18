@@ -1,0 +1,8 @@
+/.php-cs-fixer-dist.php export-ignore
+/.scrutinizer.yml export-ignore
+/bin/ export-ignore
+/doc/ export-ignore
+/fixtures/ export-ignore
+/phpunit.xml.dist export-ignore
+/tests/ export-ignore
+/docker-compose.yaml export-ignore
