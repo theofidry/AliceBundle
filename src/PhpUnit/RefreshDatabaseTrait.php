@@ -25,16 +25,15 @@ trait RefreshDatabaseTrait
 {
     use BaseDatabaseTrait;
 
-    protected static bool $dbPopulated = false;
-
     protected static function bootKernel(array $options = []): KernelInterface
     {
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);
 
-        if (!static::$dbPopulated) {
+        if (!RefreshDatabaseState::isDbPopulated()) {
             static::populateDatabase();
-            static::$dbPopulated = true;
+
+            RefreshDatabaseState::setDbPopulated(true);
         }
 
         $container = static::$kernel->getContainer();
