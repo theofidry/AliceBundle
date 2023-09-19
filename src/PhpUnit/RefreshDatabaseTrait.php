@@ -30,9 +30,10 @@ trait RefreshDatabaseTrait
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);
 
-        if (!defined('HAUTELOOK_DB_POPULATED')) {
+        if (!RefreshDatabaseState::isDbPopulated()) {
             static::populateDatabase();
-            define('HAUTELOOK_DB_POPULATED', true);
+
+            RefreshDatabaseState::setDbPopulated(true);
         }
 
         $container = static::$kernel->getContainer();
