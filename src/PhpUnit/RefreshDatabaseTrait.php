@@ -32,8 +32,11 @@ trait RefreshDatabaseTrait
 
         if (!RefreshDatabaseState::isDbPopulated()) {
             static::populateDatabase();
+            FixtureStore::setFixtures(static::$fixtures);
 
             RefreshDatabaseState::setDbPopulated(true);
+        } else {
+            static::$fixtures = FixtureStore::getFixtures();
         }
 
         $container = static::$kernel->getContainer();
