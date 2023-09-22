@@ -22,6 +22,11 @@ use Hautelook\AliceBundle\Functional\TestKernel;
  */
 trait RefreshTestTrait
 {
+    public function testUnitOfWorkIsEmptyAtTheStartOfTheTest(): void
+    {
+        self::assertEquals(0, $this->getManager()->getUnitOfWork()->size());
+    }
+
     public function testRefresh(): void
     {
         $manager = $this->getManager();
