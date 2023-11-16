@@ -17,6 +17,7 @@ jobs:
             matrix:
                 php:
                     - '8.1'
+                    - '8.2'
                 dependencies: ['highest']
             fail-fast: false
         env:
@@ -38,19 +39,27 @@ jobs:
                 run: php-cs-fixer fix --dry-run --diff --ansi
 
     phpunit:
-        name: PHPUnit (PHP ${{ matrix.php }}) ${{ matrix.variant }}
+        name: PHPUnit PHP ${{ matrix.php }} ${{ matrix.dependency }} (Symfony ${{ matrix.symfony }})
         runs-on: ubuntu-latest
         strategy:
             matrix:
                 php:
                     - '8.1'
-                variant: ['normal']
-                dependencies: ['highest']
+                    - '8.2'
+                dependency:
+                    - ''
+                symfony:
+                    - '5.4.*'
+                    - '6.3.*'
+                    - '6.4.*'
+                    - '7.0.*'
                 include:
-                    -   php: '8.1'
-                        variant: 'symfony/symfony:"^5.4"'
-                        dependencies: 'highest'
-                        composer-flags: ''
+                    - php: '8.1'
+                      symfony: '5.4.*'
+                      dependency: 'lowest'
+                exclude:
+                    - php: '8.1'
+                      symfony: '7.0.*'
             fail-fast: false
 
         services:
@@ -67,23 +76,25 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
 
-            -   name: Configure Symfony (variant)
-                if: matrix.variant != 'normal'
-                run: composer require --dev --no-update ${{ matrix.variant }}
-
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    tools: composer
+                    tools: composer, flex
                     extensions: intl, bcmath, curl, openssl, mbstring
                     ini-values: memory_limit=-1
 
-            -   name: Install Composer dependencies (${{ matrix.dependencies }})
-                uses: ramsey/composer-install@v1
-                with:
-                    dependency-versions: ${{ matrix.dependencies }}
-                    composer-options: "--prefer-dist"
+            -   name: Update project dependencies
+                if: matrix.dependency == ''
+                run: composer update --no-progress --ansi --prefer-stable
+                env:
+                    SYMFONY_REQUIRE: ${{ matrix.symfony }}
+
+            -   name: Update project dependencies lowest
+                if: matrix.dependency == 'lowest'
+                run: composer update --no-progress --ansi --prefer-stable --prefer-lowest
+                env:
+                    SYMFONY_REQUIRE: ${{ matrix.symfony }}
 
             -   name: Wait for MySQL
                 run: |
