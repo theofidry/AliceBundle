@@ -34,10 +34,12 @@ trait RefreshDatabaseTrait
             static::populateDatabase();
 
             RefreshDatabaseState::setDbPopulated(true);
+        } else {
+            static::$fixtures = FixtureStore::getFixtures();
         }
 
         $container = static::$kernel->getContainer();
-        $container->get('doctrine')->getConnection(static::$connection)->beginTransaction();
+        $container->get('doctrine')->getConnection(FixtureStore::getConnectionName())->beginTransaction();
 
         return $kernel;
     }
@@ -50,7 +52,7 @@ trait RefreshDatabaseTrait
         }
 
         if (null !== $container) {
-            $connection = $container->get('doctrine')->getConnection(static::$connection);
+            $connection = $container->get('doctrine')->getConnection(FixtureStore::getConnectionName());
             if ($connection->isTransactionActive()) {
                 $connection->rollback();
             }
