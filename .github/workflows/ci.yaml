@@ -46,7 +46,7 @@ jobs:
                 dependencies: ['highest']
                 include:
                     -   php: '8.2'
-                        variant: 'symfony/symfony:"^5.4"'
+                        variant: 'symfony/symfony:"^6.4"'
                         dependencies: 'highest'
                         composer-flags: ''
             fail-fast: false
