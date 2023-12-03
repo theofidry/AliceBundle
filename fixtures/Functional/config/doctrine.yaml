@@ -3,3 +3,4 @@ doctrine:
         url: 'mysql://root:password@127.0.0.1:3307/hautelook_alice_bundle?serverVersion=8.0'
     orm:
         auto_mapping: true
+        enable_lazy_ghost_objects: true
