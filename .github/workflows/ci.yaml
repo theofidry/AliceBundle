@@ -42,13 +42,10 @@ jobs:
             matrix:
                 php:
                     - '8.2'
-                variant: ['normal']
                 dependencies: ['highest']
-                include:
-                    -   php: '8.2'
-                        variant: 'symfony/symfony:"^6.4"'
-                        dependencies: 'highest'
-                        composer-flags: ''
+                symfony:
+                    - 'unchanged'
+                    - '6.4.*'
             fail-fast: false
 
         services:
@@ -65,15 +62,15 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
 
-            -   name: Configure Symfony (variant)
-                if: matrix.variant != 'normal'
-                run: composer require --dev --no-update ${{ matrix.variant }}
+            -   name: Configure Symfony version
+                if: matrix.symfony != 'unchanged'
+                run: echo "SYMFONY_REQUIRE=${{ matrix.symfony }}" >> $GITHUB_ENV
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    tools: composer
+                    tools: composer, flex
                     extensions: intl, bcmath, curl, openssl, mbstring
                     ini-values: memory_limit=-1
 
