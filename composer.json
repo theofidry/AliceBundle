@@ -45,7 +45,8 @@
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy": "^1.7",
         "symfony/phpunit-bridge": "^6.4",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "monolog/monolog": "^3.5"
     },
 
     "extra": {
