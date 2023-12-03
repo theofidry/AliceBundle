@@ -5,6 +5,7 @@ framework:
     secret: test
     test: ~
     http_method_override: false
+    handle_all_throwables: true
 
 services:
     _defaults:
