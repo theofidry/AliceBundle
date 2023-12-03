@@ -36,7 +36,7 @@ jobs:
                 run: php-cs-fixer fix --dry-run --diff --ansi
 
     phpunit:
-        name: PHPUnit PHP ${{ matrix.php }} ${{ matrix.dependency }} (Symfony ${{ matrix.symfony }})
+        name: PHPUnit (PHP ${{ matrix.php }}) ${{ matrix.variant }}
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -48,7 +48,9 @@ jobs:
                     -   php: '8.2'
                         variant: 'symfony/symfony:"^6.4"'
                         dependencies: 'highest'
-                        composer-flags: ''
+                    -   php: '8.2'
+                        variant: 'symfony/symfony:"^7.0"'
+                        dependencies: 'highest'
             fail-fast: false
 
         services:
@@ -65,25 +67,23 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
 
+            -   name: Configure Symfony (variant)
+                if: matrix.variant != 'normal'
+                run: composer require --dev --no-update ${{ matrix.variant }}
+
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    tools: composer, flex
+                    tools: composer
                     extensions: intl, bcmath, curl, openssl, mbstring
                     ini-values: memory_limit=-1
 
-            -   name: Update project dependencies
-                if: matrix.dependency == ''
-                run: composer update --no-progress --ansi --prefer-stable
-                env:
-                    SYMFONY_REQUIRE: ${{ matrix.symfony }}
-
-            -   name: Update project dependencies lowest
-                if: matrix.dependency == 'lowest'
-                run: composer update --no-progress --ansi --prefer-stable --prefer-lowest
-                env:
-                    SYMFONY_REQUIRE: ${{ matrix.symfony }}
+            -   name: Install Composer dependencies (${{ matrix.dependencies }})
+                uses: ramsey/composer-install@v1
+                with:
+                    dependency-versions: ${{ matrix.dependencies }}
+                    composer-options: "--prefer-dist"
 
             -   name: Wait for MySQL
                 run: |
