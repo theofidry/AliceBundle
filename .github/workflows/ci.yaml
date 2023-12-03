@@ -46,6 +46,7 @@ jobs:
                 symfony:
                     - 'unchanged'
                     - '6.4.*'
+                    - '7.*.*'
             fail-fast: false
 
         services:
