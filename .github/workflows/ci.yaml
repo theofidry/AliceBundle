@@ -48,8 +48,8 @@ jobs:
                 variant: ['normal']
                 dependencies: ['highest']
                 include:
-                    -   php: '8.1'
-                        variant: 'symfony/symfony:"^5.4"'
+                    -   php: '8.2'
+                        variant: 'symfony/symfony:"^6.4"'
                         dependencies: 'highest'
                         composer-flags: ''
             fail-fast: false
