@@ -57,7 +57,7 @@ return (new Config())
         'lowercase_cast' => true,
         'modernize_types_casting' => true,
         'native_function_casing' => true,
-        'new_with_braces' => true,
+        'new_with_parentheses' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
