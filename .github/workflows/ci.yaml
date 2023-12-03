@@ -27,9 +27,7 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    extensions: intl, bcmath, curl, openssl, mbstring
-                    ini-values: memory_limit=-1
-                    tools: composer, php-cs-fixer
+                    tools: php-cs-fixer
                     coverage: none
 
             -   name: Run PHP-CS-Fixer fix
@@ -71,8 +69,6 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     tools: composer, flex
-                    extensions: intl, bcmath, curl, openssl, mbstring
-                    ini-values: memory_limit=-1
 
             -   name: Install Composer dependencies (${{ matrix.dependencies }})
                 uses: ramsey/composer-install@v1
