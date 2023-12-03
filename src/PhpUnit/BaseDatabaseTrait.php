@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\PhpUnit;
 
+use function count;
 use function is_a;
 use LogicException;
 use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use function trigger_deprecation;
 
 trait BaseDatabaseTrait
 {
@@ -47,6 +49,8 @@ trait BaseDatabaseTrait
     protected static ?string $connection = null;
 
     /**
+     * @deprecated Use FixtureStore::getFixtures() instead.
+     *
      * @var array|null Contain loaded fixture from alice
      */
     protected static ?array $fixtures = null;
@@ -61,13 +65,82 @@ trait BaseDatabaseTrait
     protected static function populateDatabase(): void
     {
         $container = static::$kernel->getContainer();
-        static::$fixtures = $container->get('hautelook_alice.loader')->load(
+        $loader = $container->get('hautelook_alice.loader');
+
+        self::populateFixtureStore();
+
+        static::$fixtures = $loader->load(
             new Application(static::$kernel), // OK this is ugly... But there is no other way without redesigning LoaderInterface from the ground.
-            $container->get('doctrine')->getManager(static::$manager),
-            static::$bundles,
+            $container->get('doctrine')->getManager(FixtureStore::getManagerName()),
+            FixtureStore::getBundles(),
             static::$kernel->getEnvironment(),
-            static::$append,
-            static::$purgeWithTruncate,
+            FixtureStore::isAppend(),
+            FixtureStore::isPurgeWithTruncate(),
+        );
+
+        FixtureStore::setFixtures(static::$fixtures);
+    }
+
+    private static function populateFixtureStore(): void
+    {
+        if (null !== static::$manager) {
+            self::triggerFixtureStoreDeprecation(
+                'the database manager',
+                'setManagerName',
+            );
+
+            FixtureStore::setManagerName(static::$manager);
+        }
+
+        if (count(static::$bundles) !== 0) {
+            self::triggerFixtureStoreDeprecation(
+                'the loaded bundles',
+                'setBundles',
+            );
+
+            FixtureStore::setBundles(static::$bundles);
+        }
+
+        if (false !== static::$append) {
+            self::triggerFixtureStoreDeprecation(
+                'the append parameter',
+                'setAppend',
+            );
+
+            FixtureStore::setAppend(static::$append);
+        }
+
+        if (true !== static::$purgeWithTruncate) {
+            self::triggerFixtureStoreDeprecation(
+                'the purge with truncate parameter',
+                'setPurgeWithTruncate',
+            );
+
+            FixtureStore::setPurgeWithTruncate(static::$purgeWithTruncate);
+        }
+
+        if (null !== static::$connection) {
+            self::triggerFixtureStoreDeprecation(
+                'the connection name',
+                'setConnectionName',
+            );
+
+            FixtureStore::setConnectionName(static::$connection);
+        }
+    }
+
+    private static function triggerFixtureStoreDeprecation(
+        string $subject,
+        string $methodNameReplacement,
+    ): void {
+        trigger_deprecation(
+            'hautelook/alice-bundle',
+            '2.12.2',
+            sprintf(
+                'Setting up %s via the class static is deprecated. Use FixtureStore::%s() instead.',
+                $subject,
+                $methodNameReplacement,
+            ),
         );
     }
 }
