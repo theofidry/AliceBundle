@@ -38,8 +38,13 @@ trait RefreshDatabaseTrait
             static::$fixtures = FixtureStore::getFixtures();
         }
 
-        $container = static::$kernel->getContainer();
-        $container->get('doctrine')->getConnection(FixtureStore::getConnectionName())->beginTransaction();
+        $connection = static::$kernel
+            ->getContainer()
+            ->get('doctrine')
+            ->getConnection(FixtureStore::getConnectionName());
+
+        $connection->setNestTransactionsWithSavepoints(true);
+        $connection->beginTransaction();
 
         return $kernel;
     }
