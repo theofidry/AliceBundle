@@ -25,10 +25,9 @@ use Nelmio\Alice\Generator\ResolvedFixtureSet;
 use Nelmio\Alice\IsAServiceTrait;
 use Nelmio\Alice\Throwable\Exception\Generator\Instantiator\InstantiationException;
 use function sprintf;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class InstantiatedReferenceInstantiator implements ChainableInstantiatorInterface, ContainerAwareInterface
+final class InstantiatedReferenceInstantiator implements ChainableInstantiatorInterface
 {
     use IsAServiceTrait;
 
