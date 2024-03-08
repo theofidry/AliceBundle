@@ -15,15 +15,13 @@ namespace Hautelook\AliceBundle\Persistence\ObjectMapper;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\Cache;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataFactory;
-use Doctrine\ORM\NativeQuery;
+use Doctrine\ORM\NativeQuery;g
 use Doctrine\ORM\Proxy\ProxyFactory;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr;
