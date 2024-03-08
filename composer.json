@@ -32,9 +32,9 @@
 
     "require": {
         "php": "^8.2",
-        "doctrine/doctrine-bundle": "^2.11",
-        "doctrine/data-fixtures": "^1.7",
-        "doctrine/orm": "^2.19 || ^3",
+        "doctrine/doctrine-bundle": "^2.5",
+        "doctrine/data-fixtures": "^1.5",
+        "doctrine/orm": "^2.10.0",
         "doctrine/persistence": "^2.2 || ^3.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "symfony/finder": "^6.4 || ^7.0",
