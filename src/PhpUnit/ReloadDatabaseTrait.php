@@ -28,7 +28,14 @@ trait ReloadDatabaseTrait
     {
         static::ensureKernelTestCase();
         $kernel = parent::bootKernel($options);
-        static::populateDatabase();
+
+        if (!RefreshDatabaseState::isDbPopulated()) {
+            static::populateDatabase();
+
+            RefreshDatabaseState::setDbPopulated(true);
+        } else {
+            static::$fixtures = FixtureStore::getFixtures();
+        }
 
         return $kernel;
     }
