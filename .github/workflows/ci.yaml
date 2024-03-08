@@ -40,7 +40,7 @@ jobs:
             matrix:
                 php:
                     - '8.2'
-                dependencies: ['highest']
+                dependencies: ['highest', 'lowest']
                 symfony:
                     - 'unchanged'
                     - '6.4.*'

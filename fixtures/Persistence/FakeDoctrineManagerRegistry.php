@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Persistence;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use function func_get_args;
 use Hautelook\AliceBundle\NotCallableTrait;
 
@@ -27,52 +26,52 @@ class FakeDoctrineManagerRegistry implements ManagerRegistry
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getConnection(?string $name = null): object
+    public function getConnection($name = null): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getConnections(): array
+    public function getConnections(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getConnectionNames(): array
+    public function getConnectionNames(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getDefaultManagerName(): string
+    public function getDefaultManagerName(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getManager(?string $name = null): ObjectManager
+    public function getManager($name = null): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getManagers(): array
+    public function getManagers(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function resetManager(?string $name = null): ObjectManager
+    public function resetManager($name = null): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getManagerNames(): array
+    public function getManagerNames(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getRepository(string $persistentObject, ?string $persistentManagerName = null)
+    public function getRepository($persistentObject, $persistentManagerName = null): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getManagerForClass(string $class): ?ObjectManager
+    public function getManagerForClass($class): void
     {
         $this->__call(__METHOD__, func_get_args());
     }

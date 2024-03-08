@@ -43,7 +43,6 @@ trait RefreshDatabaseTrait
             ->get('doctrine')
             ->getConnection(FixtureStore::getConnectionName());
 
-        $connection->setNestTransactionsWithSavepoints(true);
         $connection->beginTransaction();
 
         return $kernel;

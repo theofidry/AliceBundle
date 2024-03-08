@@ -15,21 +15,19 @@ namespace Hautelook\AliceBundle\Persistence\ObjectMapper;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\Cache;
-use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\NativeQuery;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\UnitOfWork;
-use Doctrine\Persistence\ObjectRepository;
 use function func_get_args;
 use Hautelook\AliceBundle\NotCallableTrait;
 
@@ -57,7 +55,7 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function transactional($func): mixed
+    public function wrapInTransaction($func): mixed
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -77,17 +75,7 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function createNamedQuery($name): Query
-    {
-        $this->__call(__METHOD__, func_get_args());
-    }
-
     public function createNativeQuery($sql, ResultSetMapping $rsm): NativeQuery
-    {
-        $this->__call(__METHOD__, func_get_args());
-    }
-
-    public function createNamedNativeQuery($name): NativeQuery
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -102,17 +90,12 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getPartialReference($entityName, $identifier): ?object
-    {
-        $this->__call(__METHOD__, func_get_args());
-    }
-
     public function close(): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function copy($entity, $deep = false): object
+    public function copy($entity, $deep = false): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -127,7 +110,7 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getConfiguration(): Configuration
+    public function getConfiguration(): \Doctrine\ORM\Configuration
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -137,12 +120,7 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getUnitOfWork(): UnitOfWork
-    {
-        $this->__call(__METHOD__, func_get_args());
-    }
-
-    public function getHydrator($hydrationMode): AbstractHydrator
+    public function getUnitOfWork(): \Doctrine\ORM\UnitOfWork
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -157,7 +135,7 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getFilters(): FilterCollection
+    public function getFilters(): Query\FilterCollection
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -172,17 +150,22 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function find(string $className, $id): ?object
+    public function find($className, $id, LockMode|int|null $lockMode = null, int|null $lockVersion = null): ?object
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function persist(object $object): void
+    public function persist($object): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function remove(object $object): void
+    public function remove($object): void
+    {
+        $this->__call(__METHOD__, func_get_args());
+    }
+
+    public function merge($object): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -192,12 +175,12 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function detach(object $object): void
+    public function detach($object): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function refresh(object $object): void
+    public function refresh($object, LockMode|int|null $lockMode = null): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
@@ -212,17 +195,17 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function getMetadataFactory(): ObjectRepository
+    public function getMetadataFactory(): ClassMetadataFactory
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function initializeObject(object $obj): void
+    public function initializeObject($obj): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function contains(object $object): bool
+    public function contains($object): void
     {
         $this->__call(__METHOD__, func_get_args());
     }
