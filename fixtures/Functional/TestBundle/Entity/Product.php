@@ -26,7 +26,7 @@ class Product
     #[ORM\Column(type: 'string', length: 100)]
     protected $name;
 
-    #[ORM\Column(type: 'decimal', scale: 2)]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     protected $price;
 
     #[ORM\Column(type: 'text')]
