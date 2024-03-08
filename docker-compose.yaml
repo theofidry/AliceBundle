@@ -2,6 +2,19 @@ version: '3.1'
 
 # To keep in sync with .gitHub/workflows/tests.yaml
 services:
+    php:
+        build: .
+        volumes:
+            - .:/app
+            - ./.cache/composer:/tmp/composer/cache:delegated
+        working_dir: /app
+        environment:
+          - DATABASE_URL=mysql://root:password@mysql/hautelook_alice_bundle
+        profiles:
+          - php
+        user: ${USER_ID:-1000}
+        network_mode: host
+
     mysql:
         image: mysql:8.0
         platform: linux/amd64
