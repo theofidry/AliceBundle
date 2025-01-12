@@ -25,7 +25,7 @@ final class BundleNotFoundException extends RuntimeException
     /**
      * @param BundleInterface[] $bundles
      */
-    public static function create(string $bundle, array $bundles, int $code = 0, Throwable $previous = null): self
+    public static function create(string $bundle, array $bundles, int $code = 0, ?Throwable $previous = null): self
     {
         return new self(
             sprintf(
