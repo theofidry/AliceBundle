@@ -88,7 +88,7 @@ class DoctrineOrmLoadDataFixturesCommand extends Command
         ;
     }
 
-    public function setApplication(?ConsoleApplication $application = null): void
+    public function setApplication(ConsoleApplication $application = null): void
     {
         if (null !== $application
             && !($application instanceof FrameworkBundleConsoleApplication)

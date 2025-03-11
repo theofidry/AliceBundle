@@ -17,11 +17,6 @@ jobs:
             matrix:
                 php:
                     - '8.2'
-                    - '8.3'
-                include:
-                    - php: '8.4'
-                      env:
-                        PHP_CS_FIXER_IGNORE_ENV: '1'
                 dependencies: ['highest']
             fail-fast: false
         steps:
@@ -37,8 +32,6 @@ jobs:
 
             -   name: Run PHP-CS-Fixer fix
                 run: php-cs-fixer fix --dry-run --diff --ansi
-                env:
-                    PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.env.PHP_CS_FIXER_IGNORE_ENV }}
 
     phpunit:
         name: PHPUnit (PHP ${{ matrix.php }}) Symfony ${{ matrix.symfony }}
@@ -47,18 +40,11 @@ jobs:
             matrix:
                 php:
                     - '8.2'
-                    - '8.3'
-                include:
-                    - php: '8.4'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: 'weak'
                 dependencies: ['highest', 'lowest']
                 symfony:
                     - 'unchanged'
                     - '6.4.*'
                     - '7.*.*'
-                env:
-                    - SYMFONY_DEPRECATIONS_HELPER: 'max[direct]=0'
             fail-fast: false
 
         services:
@@ -99,8 +85,6 @@ jobs:
 
             -   name: Run tests
                 run: vendor/bin/phpunit --verbose --stop-on-failure
-                env:
-                    SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.env.SYMFONY_DEPRECATIONS_HELPER }}
 
     # This is a "trick", a meta task which does not change, and we can use in
     # the protected branch rules as opposed to the individual tests which

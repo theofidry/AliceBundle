@@ -30,7 +30,7 @@ final class KernelFileLocator implements FileLocatorInterface
         $this->kernel = $kernel;
     }
 
-    public function locate(string $name, ?string $currentPath = null): string
+    public function locate(string $name, string $currentPath = null): string
     {
         if ('@' === $name[0]) {
             return $this->kernel->locateResource($name);

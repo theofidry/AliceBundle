@@ -22,7 +22,7 @@ class FakeLoader implements DataFixturesLoaderInterface
 {
     use NotCallableTrait;
 
-    public function load(array $fixturesFiles, array $parameters = [], array $objects = [], ?PurgeMode $purgeMode = null): array
+    public function load(array $fixturesFiles, array $parameters = [], array $objects = [], PurgeMode $purgeMode = null): array
     {
         $this->__call(__METHOD__, func_get_args());
     }
