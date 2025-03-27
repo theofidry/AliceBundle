@@ -205,12 +205,17 @@ class FakeEntityManager implements EntityManagerInterface
         $this->__call(__METHOD__, func_get_args());
     }
 
-    public function contains($object): void
+    public function contains($object): bool
     {
         $this->__call(__METHOD__, func_get_args());
     }
 
     public function getClassMetadata($className): ClassMetadata
+    {
+        $this->__call(__METHOD__, func_get_args());
+    }
+
+    public function isUninitializedObject(mixed $value): bool
     {
         $this->__call(__METHOD__, func_get_args());
     }
