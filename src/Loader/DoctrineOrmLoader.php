@@ -48,7 +48,7 @@ class DoctrineOrmLoader implements AliceBundleLoaderInterface, LoggerAwareInterf
         FixtureLocatorInterface $fixtureLocator,
         LoaderInterface $purgeLoader,
         LoaderInterface $appendLoader,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null
     ) {
         $this->bundleResolver = $bundleResolver;
         $this->fixtureLocator = $fixtureLocator;
