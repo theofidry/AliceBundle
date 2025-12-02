@@ -37,7 +37,7 @@ class AppKernel extends Kernel
         ];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         if ('public' !== $this->getEnvironment()) {
             $loader->load(__DIR__.'/config/config.yaml');
