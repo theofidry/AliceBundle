@@ -32,17 +32,18 @@
 
     "require": {
         "php": "^8.4",
-        "doctrine/doctrine-bundle": "^2.11.3 || ^3.0",
+        "doctrine/doctrine-bundle": "^2.18.2 || ^3.0",
         "doctrine/data-fixtures": "^1.7 || ^2.0",
         "doctrine/orm": "^3.1",
         "doctrine/persistence": "^3.3.1 || ^4.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "symfony/finder": "7.4 || ^8.0",
         "symfony/framework-bundle": "^7.4 || ^8.0",
-        "theofidry/alice-data-fixtures": "^1.10"
+        "theofidry/alice-data-fixtures": "^1.10",
+        "symfony/doctrine-bridge": "7.4 || ^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.0",
+        "phpunit/phpunit": "^11.5.46",
         "phpspec/prophecy": "^1.14.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "monolog/monolog": "^3.5",
