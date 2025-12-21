@@ -19,13 +19,13 @@ use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\AnotherDummyBundle\Another
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\DummyBundle\DummyBundle;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\EmptyBundle\EmptyBundle;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator\OneMoreDummyBundle\OneMoreDummyBundle;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use function realpath;
 use ReflectionClass;
 
-/**
- * @covers \Hautelook\AliceBundle\Locator\EnvDirectoryLocator
- */
+#[CoversClass(EnvDirectoryLocator::class)]
 class EnvDirectoryLocatorTest extends TestCase
 {
     public function testIsAFixtureLocator(): void
@@ -38,9 +38,7 @@ class EnvDirectoryLocatorTest extends TestCase
         self::assertFalse((new ReflectionClass(EnvDirectoryLocator::class))->isCloneable());
     }
 
-    /**
-     * @dataProvider provideSets
-     */
+    #[DataProvider('provideSets')]
     public function testGetFilesFromABundle(array $bundles, string $environment, array $paths, array $expected): void
     {
         $invalidPath = '';
@@ -50,7 +48,7 @@ class EnvDirectoryLocatorTest extends TestCase
         self::assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function provideSets(): ?\Generator
+    public static function provideSets(): iterable
     {
         yield 'bundle without any resources' => [
             [new EmptyBundle()],
@@ -145,9 +143,7 @@ class EnvDirectoryLocatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideSetsForSeveralBundles
-     */
+    #[DataProvider('provideSetsForSeveralBundles')]
     public function testGetFilesFromSeveralBundles(
         array $bundles,
         string $environment,
@@ -161,7 +157,7 @@ class EnvDirectoryLocatorTest extends TestCase
         self::assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function provideSetsForSeveralBundles(): ?\Generator
+    public static function provideSetsForSeveralBundles(): iterable
     {
         $baseDir = 'Resources'.DIRECTORY_SEPARATOR.'fixtures';
         $baseDir2 = 'Resources'.DIRECTORY_SEPARATOR.'fixtures2';

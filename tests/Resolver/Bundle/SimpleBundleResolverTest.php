@@ -16,13 +16,12 @@ namespace Hautelook\AliceBundle\Resolver\Bundle;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-/**
- * @covers \Hautelook\AliceBundle\Resolver\Bundle\SimpleBundleResolver
- */
+#[CoversClass(SimpleBundleResolver::class)]
 class SimpleBundleResolverTest extends TestCase
 {
     public function testIsABundleResolver(): void

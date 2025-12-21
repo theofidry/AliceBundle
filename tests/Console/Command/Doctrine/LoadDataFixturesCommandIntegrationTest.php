@@ -22,6 +22,9 @@ use function getcwd;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Brand;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Product;
 use Hautelook\AliceBundle\Functional\TestKernel;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use function preg_replace;
 use function str_replace;
@@ -31,11 +34,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use function trim;
 
-/**
- * @coversNothing
- *
- * @group legacy
- */
+#[Group('legacy')]
+#[CoversNothing]
 class LoadDataFixturesCommandIntegrationTest extends TestCase
 {
     private Application $application;
@@ -119,9 +119,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->verifyBrands(20);
     }
 
-    /**
-     * @dataProvider loadCommandProvider
-     */
+    #[DataProvider('loadCommandProvider')]
     public function testFixturesRegisteringUsingInvalidManager(array $inputs, string $expected): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -143,9 +141,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         self::assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
     }
 
-    /**
-     * @dataProvider loadCommandProvider
-     */
+    #[DataProvider('loadCommandProvider')]
     public function testFixturesRegisteringUsingMySQL(array $inputs, string $expected)
     {
         $command = $this->application->find('hautelook:fixtures:load');

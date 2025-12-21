@@ -20,6 +20,8 @@ use Hautelook\AliceBundle\Loader\FakeLoader;
 use Hautelook\AliceBundle\LoaderInterface;
 use Hautelook\AliceBundle\Persistence\FakeDoctrineManagerRegistry;
 use Hautelook\AliceBundle\Persistence\ObjectMapper\FakeEntityManager;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -30,11 +32,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-/**
- * @covers \Hautelook\AliceBundle\Console\Command\Doctrine\DoctrineOrmLoadDataFixturesCommand
- *
- * @group legacy
- */
+#[Group('legacy')]
+#[CoversClass(DoctrineOrmLoadDataFixturesCommand::class)]
 class LoadDataFixturesCommandTest extends TestCase
 {
     use ProphecyTrait;

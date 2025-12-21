@@ -22,6 +22,7 @@ use Hautelook\AliceBundle\FixtureLocatorInterface;
 use Hautelook\AliceBundle\Functional\AppKernel;
 use Hautelook\AliceBundle\Functional\ConfigurableKernel;
 use Hautelook\AliceBundle\Functional\WithoutDoctrineKernel;
+use Hautelook\AliceBundle\HautelookAliceBundle;
 use Hautelook\AliceBundle\Loader\DoctrineOrmLoader;
 use Hautelook\AliceBundle\LoaderInterface as HautelookLoaderInterface;
 use Hautelook\AliceBundle\Locator\EnvDirectoryLocator;
@@ -30,13 +31,12 @@ use Hautelook\AliceBundle\Resolver\Bundle\NoBundleResolver;
 use Hautelook\AliceBundle\Resolver\Bundle\SimpleBundleResolver;
 use LogicException;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @covers \Hautelook\AliceBundle\HautelookAliceBundle
- * @covers \Hautelook\AliceBundle\DependencyInjection\Configuration
- * @covers \Hautelook\AliceBundle\DependencyInjection\HautelookAliceExtension
- */
+#[CoversClass(HautelookAliceBundle::class)]
+#[CoversClass(Configuration::class)]
+#[CoversClass(HautelookAliceExtension::class)]
 class HautelookAliceBundleTest extends KernelTestCase
 {
     public function testCannotBootIfFidryAliceDataFixturesBundleIsNotRegistered(): void

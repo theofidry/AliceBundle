@@ -97,7 +97,7 @@ jobs:
                     done
 
             -   name: Run tests
-                run: vendor/bin/phpunit --verbose --stop-on-failure
+                run: vendor/bin/phpunit --stop-on-failure
 
     # This is a "trick", a meta task which does not change, and we can use in
     # the protected branch rules as opposed to the individual tests which

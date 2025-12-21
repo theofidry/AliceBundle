@@ -21,12 +21,11 @@ use Hautelook\AliceBundle\LoggerAwareInterface;
 use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
 use InvalidArgumentException;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-/**
- * @covers \Hautelook\AliceBundle\Loader\DoctrineOrmLoader
- */
+#[CoversClass(DoctrineOrmLoader::class)]
 class DoctrineOrmLoaderTest extends TestCase
 {
     public function testIsALoader(): void

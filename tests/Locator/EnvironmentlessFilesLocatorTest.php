@@ -15,15 +15,14 @@ namespace Hautelook\AliceBundle\Locator;
 
 use Hautelook\AliceBundle\FixtureLocatorInterface;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use ReflectionClass;
 
-/**
- * @covers \Hautelook\AliceBundle\Locator\EnvironmentlessFilesLocator
- */
+#[CoversClass(EnvironmentlessFilesLocator::class)]
 class EnvironmentlessFilesLocatorTest extends TestCase
 {
     use ProphecyTrait;

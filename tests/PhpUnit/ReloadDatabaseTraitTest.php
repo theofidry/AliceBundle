@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\PhpUnit;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
- *
- * @coversNothing
  */
+#[CoversNothing]
 class ReloadDatabaseTraitTest extends KernelTestCase
 {
     use RefreshTestTrait;
