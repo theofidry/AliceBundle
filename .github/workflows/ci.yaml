@@ -46,8 +46,7 @@ jobs:
                 dependencies: ['highest', 'lowest']
                 symfony:
                     - 'unchanged'
-                    - '6.4.*'
-                    - '7.*.*'
+                    - '7.4.*'
                     - '8.*.*'
             fail-fast: false
 
