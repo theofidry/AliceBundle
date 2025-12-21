@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use function array_diff;
 use function array_merge;
 use function array_shift;
@@ -31,11 +34,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use function trim;
 
-/**
- * @coversNothing
- *
- * @group legacy
- */
+#[Group('legacy')]
+#[CoversNothing]
 class LoadDataFixturesCommandIntegrationTest extends TestCase
 {
     private Application $application;
@@ -119,9 +119,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         $this->verifyBrands(20);
     }
 
-    /**
-     * @dataProvider loadCommandProvider
-     */
+    #[DataProvider('loadCommandProvider')]
     public function testFixturesRegisteringUsingInvalidManager(array $inputs, string $expected): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -143,9 +141,7 @@ class LoadDataFixturesCommandIntegrationTest extends TestCase
         self::assertFixturesDisplayEquals($expected, $commandTester->getDisplay());
     }
 
-    /**
-     * @dataProvider loadCommandProvider
-     */
+    #[DataProvider('loadCommandProvider')]
     public function testFixturesRegisteringUsingMySQL(array $inputs, string $expected)
     {
         $command = $this->application->find('hautelook:fixtures:load');

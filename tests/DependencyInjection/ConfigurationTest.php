@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
-/**
- * @covers \Hautelook\AliceBundle\DependencyInjection\Configuration
- */
+#[CoversClass(Configuration::class)]
 class ConfigurationTest extends TestCase
 {
     public function testDefaultValues(): void

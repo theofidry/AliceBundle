@@ -16,6 +16,7 @@ namespace Hautelook\AliceBundle\Resolver\Bundle;
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
+use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -23,9 +24,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-/**
- * @covers \Hautelook\AliceBundle\Resolver\Bundle\NoBundleResolver
- */
+#[CoversClass(NoBundleResolver::class)]
 class NoBundleResolverTest extends TestCase
 {
     use ProphecyTrait;

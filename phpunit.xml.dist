@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         colors="true"
-         forceCoversAnnotation="true"
-         verbose="true">
+         colors="true">
 
     <php>
         <server name="APP_ENV" value="test" force="true" />
         <server name="KERNEL_DIR" value="tests/Functional" />
         <server name="KERNEL_CLASS" value="Hautelook\AliceBundle\Functional\TestKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
     </php>
 
     <testsuites>
@@ -18,10 +15,10 @@
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
-    </coverage>
+    </source>
 
 </phpunit>

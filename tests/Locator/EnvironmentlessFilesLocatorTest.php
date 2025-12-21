@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Locator;
 
 use Hautelook\AliceBundle\FixtureLocatorInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -21,9 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use ReflectionClass;
 
-/**
- * @covers \Hautelook\AliceBundle\Locator\EnvironmentlessFilesLocator
- */
+#[CoversClass(EnvironmentlessFilesLocator::class)]
 class EnvironmentlessFilesLocatorTest extends TestCase
 {
     use ProphecyTrait;

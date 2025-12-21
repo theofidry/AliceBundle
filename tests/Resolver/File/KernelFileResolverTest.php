@@ -17,6 +17,7 @@ use Fidry\AliceDataFixtures\FileResolverInterface;
 use Hautelook\AliceBundle\Functional\SimpleKernel;
 use Hautelook\AliceBundle\HttpKernel\DummyKernel;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -25,9 +26,7 @@ use ReflectionClass;
 use Symfony\Component\HttpKernel\KernelInterface;
 use TypeError;
 
-/**
- * @covers \Hautelook\AliceBundle\Resolver\File\KernelFileResolver
- */
+#[CoversClass(KernelFileResolver::class)]
 class KernelFileResolverTest extends TestCase
 {
     use ProphecyTrait;
