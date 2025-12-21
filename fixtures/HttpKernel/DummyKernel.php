@@ -131,4 +131,9 @@ class DummyKernel implements KernelInterface
     {
         $this->__call(__METHOD__, func_get_args());
     }
+
+    public function getShareDir(): ?string
+    {
+        $this->__call(__METHOD__, func_get_args());
+    }
 }

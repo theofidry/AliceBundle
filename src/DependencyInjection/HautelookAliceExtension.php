@@ -22,7 +22,7 @@ use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -86,7 +86,7 @@ final class HautelookAliceExtension extends Extension
      */
     private function loadServices(ContainerBuilder $container): void
     {
-        $loader = new XmlFileLoader($container, new FileLocator(self::SERVICES_DIR));
+        $loader = new PhpFileLoader($container, new FileLocator(self::SERVICES_DIR));
         $finder = new Finder();
 
         $finder->files()->in(self::SERVICES_DIR);
