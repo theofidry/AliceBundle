@@ -45,7 +45,8 @@
         "phpunit/phpunit": "^9.6.17",
         "phpspec/prophecy": "^1.14.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "monolog/monolog": "^3.5"
+        "monolog/monolog": "^3.5",
+        "symfony/runtime": "*"
     },
 
     "extra": {
@@ -54,5 +55,10 @@
         },
         "bin-dir": "bin",
         "sort-packages": true
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": false
+        }
     }
 }
