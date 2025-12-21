@@ -51,6 +51,11 @@ jobs:
                     - '6.4.*'
                     - '7.*.*'
                     - '8.*.*'
+                exclude:
+                    - php: '8.2'
+                      symfony: '8.*.*'
+                    - php: '8.3'
+                      symfony: '8.*.*'
             fail-fast: false
 
         services:
