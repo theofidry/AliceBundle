@@ -21,10 +21,10 @@ jobs:
             fail-fast: false
         steps:
             -   name: Checkout
-                uses: actions/checkout@v4
+                uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
             -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
                 with:
                     php-version: ${{ matrix.php }}
                     tools: php-cs-fixer
@@ -43,17 +43,19 @@ jobs:
                 php:
                     - '8.2'
                     - '8.3'
-                include:
-                    - php: '8.4'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: 'weak'
+                    - '8.4'
+                    - '8.5'
                 dependencies: ['highest', 'lowest']
                 symfony:
                     - 'unchanged'
                     - '6.4.*'
                     - '7.*.*'
-                env:
-                    - SYMFONY_DEPRECATIONS_HELPER: 'max[direct]=0'
+                    - '8.*.*'
+                exclude:
+                    - php: '8.2'
+                      symfony: '8.*.*'
+                    - php: '8.3'
+                      symfony: '8.*.*'
             fail-fast: false
 
         services:
@@ -68,20 +70,20 @@ jobs:
                     MYSQL_ROOT_PASSWORD: password
         steps:
             -   name: Checkout
-                uses: actions/checkout@v4
+                uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
             -   name: Configure Symfony version
                 if: matrix.symfony != 'unchanged'
                 run: echo "SYMFONY_REQUIRE=${{ matrix.symfony }}" >> $GITHUB_ENV
 
             -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # 2.36.0
                 with:
                     php-version: ${{ matrix.php }}
                     tools: composer, flex
 
             -   name: Install Composer dependencies (${{ matrix.dependencies }})
-                uses: ramsey/composer-install@v3
+                uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # 3.1.1
                 with:
                     dependency-versions: ${{ matrix.dependencies }}
                     composer-options: "--prefer-dist"
@@ -94,8 +96,6 @@ jobs:
 
             -   name: Run tests
                 run: vendor/bin/phpunit --verbose --stop-on-failure
-                env:
-                    SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.env.SYMFONY_DEPRECATIONS_HELPER }}
 
     # This is a "trick", a meta task which does not change, and we can use in
     # the protected branch rules as opposed to the individual tests which
