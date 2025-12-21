@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+        url: 'mysql://root:password@127.0.0.1:3307/hautelook_alice_bundle?serverVersion=8.1'
+    orm:
+        auto_mapping: true

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Functional;
 
+use Composer\InstalledVersions;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use Hautelook\AliceBundle\HautelookAliceBundle;
@@ -44,7 +45,11 @@ class AppKernel extends Kernel
             $loader->load(__DIR__.'/config/test/config.yaml');
         }
 
-        $loader->load(__DIR__.'/config/doctrine.yaml');
+        if (version_compare(InstalledVersions::getVersion('doctrine/doctrine-bundle'), '3.0', '>=')) {
+            $loader->load(__DIR__.'/config/doctrine_bundle3.yaml');
+        } else {
+            $loader->load(__DIR__.'/config/doctrine_bundle2.yaml');
+        }
     }
 
     public function build(ContainerBuilder $container): void
