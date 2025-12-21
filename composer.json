@@ -31,7 +31,7 @@
     },
 
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "doctrine/doctrine-bundle": "^2.11.3 || ^3.0",
         "doctrine/data-fixtures": "^1.7 || ^2.0",
         "doctrine/orm": "^3.1",
