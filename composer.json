@@ -39,7 +39,7 @@
         "psr/log": "^1.0 || ^2.0 || ^3.0",
         "symfony/finder": "7.4 || ^8.0",
         "symfony/framework-bundle": "^7.4 || ^8.0",
-        "theofidry/alice-data-fixtures": "^1.7"
+        "theofidry/alice-data-fixtures": "^1.10"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6.17",
