@@ -20,8 +20,8 @@ use Hautelook\AliceBundle\Logger\FakeLogger;
 use Hautelook\AliceBundle\LoggerAwareInterface;
 use Hautelook\AliceBundle\Resolver\FakeBundleResolver;
 use InvalidArgumentException;
-use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 

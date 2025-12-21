@@ -15,8 +15,8 @@ namespace Hautelook\AliceBundle\Resolver\Bundle;
 
 use Hautelook\AliceBundle\BundleResolverInterface;
 use Hautelook\AliceBundle\Resolver\ResolverKernel;
-use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

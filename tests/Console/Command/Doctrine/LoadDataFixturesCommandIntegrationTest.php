@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Hautelook\AliceBundle\Console\Command\Doctrine;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use function array_diff;
 use function array_merge;
 use function array_shift;
@@ -25,6 +22,9 @@ use function getcwd;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Brand;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\Product;
 use Hautelook\AliceBundle\Functional\TestKernel;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use function preg_replace;
 use function str_replace;

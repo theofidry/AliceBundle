@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Hautelook\AliceBundle\Locator;
 
 use Hautelook\AliceBundle\FixtureLocatorInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

@@ -15,7 +15,6 @@ namespace Hautelook\AliceBundle\Alice\Generator\Instantiator\Chainable;
 
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\City;
 use Hautelook\AliceBundle\Functional\TestBundle\Entity\CityFactory;
-use PHPUnit\Framework\Attributes\CoversClass;
 use function is_a;
 use LogicException;
 use Nelmio\Alice\Definition\Fixture\SimpleFixture;
@@ -32,6 +31,7 @@ use Nelmio\Alice\Generator\ResolvedFixtureSet;
 use Nelmio\Alice\ObjectBag;
 use Nelmio\Alice\ParameterBag;
 use Nelmio\Alice\Throwable\Exception\Generator\Instantiator\InstantiationException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Container;
