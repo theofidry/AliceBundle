@@ -44,7 +44,7 @@ jobs:
                     PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.env.PHP_CS_FIXER_IGNORE_ENV }}
 
     phpunit:
-        name: PHPUnit (PHP ${{ matrix.php }}) Symfony ${{ matrix.symfony }}
+        name: PHPUnit (PHP ${{ matrix.php }}) Symfony ${{ matrix.symfony }} (${{ matrix.dependencies }})
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -84,7 +84,7 @@ jobs:
                     php-version: ${{ matrix.php }}
                     tools: composer, flex
 
-            -   name: Install Composer dependencies (${{ matrix.dependencies }})
+            -   name: Install Composer dependencies
                 uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # 3.1.1
                 with:
                     dependency-versions: ${{ matrix.dependencies }}
