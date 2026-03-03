@@ -39,7 +39,7 @@ trait RecreateDatabaseTrait
     protected static function buildSchema(): void
     {
         $container = static::$kernel->getContainer();
-        $em = $container->get('doctrine')->getManager(static::$manager);
+        $em = $container->get('doctrine')->getManager(FixtureStore::getManagerName());
         $meta = $em->getMetadataFactory()->getAllMetadata();
 
         if (!empty($meta)) {
