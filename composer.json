@@ -47,7 +47,8 @@
         "phpspec/prophecy": "^1.14.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "monolog/monolog": "^3.5",
-        "symfony/runtime": "*"
+        "symfony/runtime": "*",
+        "php-cs-fixer/shim": "^3.94"
     },
 
     "extra": {
